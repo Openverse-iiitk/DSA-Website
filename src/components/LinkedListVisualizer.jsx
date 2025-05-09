@@ -244,6 +244,7 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange }) => {
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           placeholder="Enter node data"
+          style={{marginRight:'10px'}}
         />
         <input
           type="number"
