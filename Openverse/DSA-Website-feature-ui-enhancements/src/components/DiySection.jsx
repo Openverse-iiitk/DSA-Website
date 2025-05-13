@@ -5,10 +5,15 @@ const DiySection = ({ code }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(code).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
+    navigator.clipboard.writeText(code)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      })
+      .catch((error) => {
+        console.error('Failed to copy text to clipboard:', error);
+        alert('Failed to copy text. Please try again.');
+      });
   };
 
   return (
