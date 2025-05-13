@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
 import CodeViewer from './components/CodeViewer';
 import LinkedListVisualizer from './components/LinkedListVisualizer';
 import DiySection from './components/DiySection';
 import DoublyLinkedListExplanation from './components/DoublyLinkedListExplanation';
+import HomePage from './components/HomePage';
 import { generateCppCode } from './utils/codeGenerator';
 import Split from 'react-split';
 
@@ -22,9 +25,13 @@ function App() {
     setHighlightedLine(newLine);
   };
 
-  return (
+  // Visualizer component that preserves the original layout
+  const VisualizerComponent = () => (
     <div className="app-container">
       <header className="app-header">
+        <Link to="/" className="visualizer-home-btn">
+          <FaHome style={{ marginRight: '8px', fontSize: '16px' }} /> Back to Home
+        </Link>
         <h1>C++ Doubly Linked List Visualization</h1>
       </header>
 
@@ -48,6 +55,15 @@ function App() {
         </Split>
       </div>
     </div>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/linked-list" element={<VisualizerComponent />} />
+      </Routes>
+    </Router>
   );
 }
 
