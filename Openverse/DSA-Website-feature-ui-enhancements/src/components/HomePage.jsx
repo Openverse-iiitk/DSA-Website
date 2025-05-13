@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH } from 'react-icons/fa';
 import './HomePage.css';
+import Robocats from '../assets/Robocats.svg';
+import logo from '../assets/openverse2.svg';
 
 const Card = ({ title, link, icon, type, enabled = true, color }) => {
   // Apply card class and style with proper background color
@@ -134,8 +136,10 @@ const HomePage = () => {
       
       <header className="homepage-header">
         <div className="homepage-logo">
-          <img src="/openverse2.svg" alt="OPENVERSE" />
-          <span>OPENVERSE</span>
+          <a href="/">
+            <img src={logo} alt="Openverse logo" />
+            <span>Openverse</span>
+          </a>
         </div>
         <div className="homepage-nav">
           <Link to="/about" className="homepage-nav-link">About us</Link>
@@ -219,8 +223,18 @@ const HomePage = () => {
           <div className="particle p15"></div>
         </div>
       </main>
+
+      {/* stretched SVG footer as a sticky block */}
+      <img
+        src={Robocats}
+        alt="RoboCats Logo"
+        className="homepage-footer"
+      />
+
     </div>
   );
 };
 
 export default HomePage;
+
+/* CSS Code */

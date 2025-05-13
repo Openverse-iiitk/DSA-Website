@@ -16,6 +16,17 @@
   max-width: 100%;
 }
 
+/* ensure the page can scroll and footer sticks to viewport bottom */
+.homepage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.homepage-main {
+  flex: 1;  /* take up remaining space */
+}
+
 /* Enhanced starry background overlay with animation */
 .homepage-bg-overlay {
   position: absolute;
@@ -421,10 +432,33 @@
   font-weight: 700;
   margin: 20px 0 50px 0;
   text-align: center;
-  background: linear-gradient(90deg, #FFFFFF, #a8a8ff);
+
+  /* wave-ish animated gradient using #825BF1 */
+  background: linear-gradient(
+    45deg,
+    #ffffff 0%,
+    #A28FFB 50%,
+    #825BF1 100%
+  );
+  background-size: 300% 300%;
+  animation: waveGradient 3s ease infinite;
+
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  /* add glow */
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.6),
+    0 0 16px rgba(162, 143, 251, 0.6),
+    0 0 24px rgba(130, 91, 241, 0.4);
   position: relative;
+}
+
+@keyframes waveGradient {
+  0%   { background-position:   0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position:   0% 50%; }
 }
 
 .homepage-title::after {
@@ -574,6 +608,13 @@
   border-radius: 18px;
   pointer-events: none;
 }
+.homepage-logo a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+}
 
 /* Card title box with refined styling */
 .homepage-card-title-box {
@@ -716,6 +757,16 @@
 .homepage-card-disabled:hover {
   transform: none;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Footer styles */
+.homepage-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  z-index: 10;
 }
 
 /* Responsive styles */
