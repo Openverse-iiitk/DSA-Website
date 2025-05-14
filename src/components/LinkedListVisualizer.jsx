@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaArrowRight, FaArrowLeft, FaExclamationTriangle } from 'react-icons/fa';
+import './SectionWrapper.css';
 
 // Memory pool size
 const MEMORY_POOL_SIZE = 10;
@@ -236,8 +237,11 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange }) => {
 
   // Render the component
   return (
-    <div className="visualization">
-      <div className="controls">
+    <div className="section-container">
+      <div className="homepage-bg-overlay" />
+
+      {/* controls */}
+      <div className="controls" style={{ marginBottom: '1rem' }}>
         <div>
         <input
           type="text"
@@ -266,56 +270,69 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange }) => {
         </div>
       </div>
 
-      <div className="linked-list-display">
-        {nodes.length === 0 ? (
-          <div className="placeholder">
-            Insert something to visualize the linked list
-          </div>
-        ) : (
-          nodes.map((node, index) => (
-            <div key={index} className="node-container">
-              {index > 0 && (
-                <div className="pointer-left">
-                  <FaArrowLeft />
+      {/* visualization panels */}
+      <div
+        className="visual-columns"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem'
+        }}
+      >
+        {/* linked list */}
+        <div className="panel">
+          {nodes.length === 0 ? (
+            <div className="placeholder">
+              Insert something to visualize the linked list
+            </div>
+          ) : (
+            nodes.map((node, index) => (
+              <div key={index} className="node-container">
+                {index > 0 && (
+                  <div className="pointer-left">
+                    <FaArrowLeft />
+                  </div>
+                )}
+                <div className="node node-active">
+                  <div className="node-address">Address: {node.address}</div>
+                  <div className="node-data">Data: {node.data}</div>
+                  <div className="node-pointers">
+                    <div>prev: {node.prev !== null ? memoryPool[node.prev]?.address : 'nullptr'}</div>
+                    <div>next: {node.next !== null ? memoryPool[node.next]?.address : 'nullptr'}</div>
+                  </div>
                 </div>
-              )}
-              <div className="node node-active">
-                <div className="node-address">Address: {node.address}</div>
-                <div className="node-data">Data: {node.data}</div>
-                <div className="node-pointers">
-                  <div>prev: {node.prev !== null ? memoryPool[node.prev]?.address : 'nullptr'}</div>
-                  <div>next: {node.next !== null ? memoryPool[node.next]?.address : 'nullptr'}</div>
+                {index < nodes.length - 1 && (
+                  <div className="pointer-right">
+                    <FaArrowRight />
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+        {/* memory pool */}
+        <div className="panel">
+          <h3>Memory Pool</h3>
+          <div className="memory-grid">
+            {memoryPool.map((slot, index) => (
+              <div 
+                key={index} 
+                className={`node ${slot.inUse ? 'node-active' : 'node-inactive'}`}
+              >
+                <div className="node-address">Address: {slot.address}</div>
+                <div className="node-status">
+                  Status: {slot.inUse ? 'Allocated' : 'Free'}
                 </div>
               </div>
-              {index < nodes.length - 1 && (
-                <div className="pointer-right">
-                  <FaArrowRight />
-                </div>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-
-      <h3>Memory Pool</h3>
-      <div className="memory-grid">
-        {memoryPool.map((slot, index) => (
-          <div 
-            key={index} 
-            className={`node ${slot.inUse ? 'node-active' : 'node-inactive'}`}
-          >
-            <div className="node-address">Address: {slot.address}</div>
-            <div className="node-status">
-              Status: {slot.inUse ? 'Allocated' : 'Free'}
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
+      {/* memory leak warning */}
       {memoryLeaks.length > 0 && (
-        <div className="memory-leak-warning">
-          <FaExclamationTriangle /> Memory Leak Detected! 
-          <div>The following memory addresses are allocated but not referenced: {memoryLeaks.join(', ')}</div>
+        <div className="memory-leak-warning" style={{ marginTop: '1rem' }}>
+          <FaExclamationTriangle /> Memory Leak Detected: {memoryLeaks.join(', ')}
         </div>
       )}
     </div>

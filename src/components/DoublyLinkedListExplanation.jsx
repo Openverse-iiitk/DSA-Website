@@ -1,16 +1,22 @@
 import { useState } from 'react';
+import './SectionWrapper.css';
 
 const DoublyLinkedListExplanation = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div className="explanation-section">
-      <h3 onClick={() => setIsExpanded(!isExpanded)} style={{ cursor: 'pointer' }}>
-        {isExpanded ? '▼' : '►'} Understanding Doubly Linked Lists
-      </h3>
-      
-      {isExpanded && (
-        <div className="explanation-content">
+    <div className="section-container">
+      <div className="homepage-bg-overlay" />
+      <details
+        className="visual-section"
+        open={expanded}
+        onToggle={e => setExpanded(e.target.open)}
+      >
+        <summary className="visual-summary">
+          {expanded ? '▼' : '►'} Understanding Doubly Linked Lists
+        </summary>
+
+        <div className="visual-content">
           <h4>What is a Doubly Linked List?</h4>
           <p>
             A doubly linked list is a type of linked list in which each node contains a data element and two pointers, 
@@ -47,7 +53,7 @@ const DoublyLinkedListExplanation = () => {
             <li>MRU (Most Recently Used) cache</li>
           </ul>
         </div>
-      )}
+      </details>
     </div>
   );
 };
