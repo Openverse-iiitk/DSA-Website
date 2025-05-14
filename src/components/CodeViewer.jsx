@@ -26,34 +26,48 @@ const CodeViewer = ({ code, onChange }) => {
 
     editorRef.current.updateTimer = setTimeout(() => {
       try {
-        const lines = value.split('\n');
-        const nodesData = [];
-        
-        // Find the main function or relevant code section
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].trim();
-          // Look for node creation and operations
-          if (line.includes('insert') || line.includes('delete')) {
-            const matches = line.match(/\d+/);
-            if (matches) {
-              const value = parseInt(matches[0]);
-              if (line.includes('insertAtBeginning')) {
-                nodesData.unshift({ data: value });
-              } else if (line.includes('insertAtEnd')) {
-                nodesData.push({ data: value });
-              } else if (line.includes('deleteFromBeginning')) {
-                nodesData.shift();
-              } else if (line.includes('deleteFromEnd')) {
-                nodesData.pop();
-              }
-            }
-          }
-        }
+        const nodesData = parseLinkedListOperations(value);
         onChange(nodesData);
       } catch (error) {
-        console.error('Error parsing code:', error);
+        console.error('Error parsing code:', error.message);
+        // Consider providing user feedback for parsing errors
       }
     }, 300); // Add a small delay to debounce rapid changes
+  }
+
+  // Helper function to parse linked list operations from code
+  function parseLinkedListOperations(code) {
+    const lines = code.split('\n');
+    const nodesData = [];
+    
+    // Find the main function or relevant code section
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      // Use more specific regex patterns for better matching
+      const insertMatch = line.match(/insert(AtBeginning|AtEnd)\s*\(\s*(\d+)/);
+      const deleteMatch = line.match(/delete(FromBeginning|FromEnd)/);
+      
+      if (insertMatch) {
+        const operation = insertMatch[1];
+        const value = parseInt(insertMatch[2], 10);
+        
+        if (operation === 'AtBeginning') {
+          nodesData.unshift({ data: value });
+        } else if (operation === 'AtEnd') {
+          nodesData.push({ data: value });
+        }
+      } else if (deleteMatch) {
+        const operation = deleteMatch[1];
+        
+        if (operation === 'FromBeginning') {
+          nodesData.shift();
+        } else if (operation === 'FromEnd') {
+          nodesData.pop();
+        }
+      }
+    }
+    
+    return nodesData;
   }
 
   return (
