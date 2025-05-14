@@ -309,7 +309,7 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolInit }) =
       .map(slot => slot.address);
 
     setMemoryLeaks(leaks);
-  }, [nodes]);
+  }, [nodes, memoryPool]);
 
   // Render the component
   return (
