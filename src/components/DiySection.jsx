@@ -7,23 +7,26 @@ const DiySection = ({ code }) => {
   
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
-    setCopyCount(prev => prev + 1);
-    
-    // Fun copy messages
-    const messages = [
-      "Copied!",
-      "Copied twice!",
-      "Mega copy!",
-      "Super copy!",
-      "Ultra copy!",
-      "MAXIMUM COPY!",
-      "LEGENDARY COPY!!",
-      "GODLIKE COPY!!!",
-      "BEYOND COPY!!!!",
-      "∞ COPY ∞"
-    ];
-    
-    setCopyText(messages[Math.min(copyCount, messages.length - 1)]);
+    setCopyCount(prev => {
+      const updatedCount = prev + 1;
+      
+      // Fun copy messages
+      const messages = [
+        "Copied!",
+        "Copied twice!",
+        "Mega copy!",
+        "Super copy!",
+        "Ultra copy!",
+        "MAXIMUM COPY!",
+        "LEGENDARY COPY!!",
+        "GODLIKE COPY!!!",
+        "BEYOND COPY!!!!",
+        "∞ COPY ∞"
+      ];
+      
+      setCopyText(messages[Math.min(updatedCount, messages.length - 1)]);
+      return updatedCount;
+    });
     
     // Reset text after 2 seconds
     setTimeout(() => {
