@@ -304,9 +304,11 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolInit }) =
     setMemoryPool(newMemoryPool);
     
     // Check for memory leaks
-    const leaks = memoryPool
+    const leaks = newMemoryPool
       .filter(slot => slot.inUse && !nodes.some(node => node.memoryIndex === slot.index))
       .map(slot => slot.address);
+    setMemoryLeaks(leaks);
+  }, [nodes, memoryPool]);
 
     setMemoryLeaks(leaks);
   }, [nodes, memoryPool]);
