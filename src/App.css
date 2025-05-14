@@ -1,47 +1,79 @@
-#root {
+body, #root {
   width: 100%;
   height: 100vh;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  background-color: #0d1117; /* Darker background to match screenshot */
+  color: #e6edf3;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
 }
 
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   width: 100%;
+  background-color: #0d1117; /* Consistent dark background */
+  padding-top: 10px; /* Added small top padding */
+}
+
+/* Header and title styling */
+.app-header {
+  position: relative;
+  text-align: center;
+  padding: 30px 0; /* Increased padding for more space */
+  border-bottom: 1px solid #30363d;
+  background-color: #0d1117; /* Ensure dark background matches screenshot */
+}
+
+.app-header h1 {
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 42px; /* Match the screenshot size */
+  margin: 0; 
+  font-weight: 600; /* Increased weight to match screenshot */
+  color: #e6edf3; /* Brighter white for better contrast */
+  letter-spacing: 2px; /* Added letter spacing to match screenshot */
 }
 
 h2 {
   text-align: center;
-    font-family: "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 26px; /* Increased to match screenshot */
+  margin: 20px 0;
+  font-weight: 500;
+  color: #e6edf3; /* Brighter white for better contrast */
 }
-.app-header{
-  text-align: center;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  border-bottom: 3px solid #30363d;
+
+.split-container {
+  flex: 1;
+  display: flex;
+  height: calc(100vh - 100px); /* Adjust for header */
+  overflow: hidden;
+  margin-top: 5px; /* Add a small space after the header */
 }
 
 .split-view {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  height: 100%;
+}
+
+.gutter {
+  background-color: #21262d; /* Darker gutter to match screenshot */
+  cursor: ew-resize;
+  width: 10px;
 }
 
 .panel {
-  flex: 1;
   overflow: auto;
   padding: 1rem;
+  background-color: #0d1117; /* Match the dark background */
 }
 
 .panel-left {
   border-right: 1px solid #30363d;
   display: flex;
   flex-direction: column;
-  height: auto;
 }
 
 .panel-right {
@@ -52,13 +84,35 @@ h2 {
 .code-viewer {
   display: flex;
   flex-direction: column;
-  background-color: #161b22;
+  background-color: #0d1117; /* Darker background to match screenshot */
   border-radius: 6px;
-  overflow : hidden;
-  height : auto;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 18px;
-  line-height: 1;
+  overflow: hidden;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 18px; /* Increased to 18px */
+  line-height: 1.6; /* Improved line spacing */
+}
+
+.code-viewer pre {
+  margin: 0;
+  padding: 15px;
+}
+
+.code-line {
+  position: relative;
+  padding-left: 50px; /* Space for line numbers */
+}
+
+.code-line-number {
+  position: absolute;
+  left: 0;
+  color: #6e7681; /* Dimmed line number color from screenshot */
+  text-align: right;
+  width: 40px;
+  user-select: none;
+}
+
+.highlighted-line {
+  background-color: rgba(88, 166, 255, 0.1);
 }
 
 .visualization {
@@ -66,30 +120,35 @@ h2 {
   display: flex;
   flex-direction: column;
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 1rem;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #161b22; /* Slightly lighter than main background */
+  position: relative; /* Added for back button positioning */
 }
 
 .controls {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
   display: flex;
-  gap: 0.5rem ;
+  gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .node {
-  background-color: #161b22;
+  background-color: #161b22; /* Match screenshot */
   border: 1px solid #30363d;
   border-radius: 6px;
-  padding: 0.5rem;
+  padding: 12px;
   position: relative;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 14px; /* Increased font size */
 }
 
 .node-active {
@@ -97,22 +156,30 @@ h2 {
 }
 
 .node-inactive {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .memory-leak-warning {
   color: #f85149;
-  margin-top: 1rem;
-  padding: 0.5rem;
+  margin-top: 20px;
+  padding: 12px;
   border: 1px solid #f85149;
   border-radius: 6px;
   background-color: rgba(248, 81, 73, 0.1);
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
 }
 
 button {
-  background-color: #21262d;
+  background-color: #21262d; /* Match screenshot button color */
   border: 1px solid #30363d;
-  color: #c9d1d9;
+  color: #e6edf3;
+  padding: 10px 16px; /* Increased padding */
+  font-size: 16px; /* Larger font size */
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 5px;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-weight: 500; /* Added weight for better readability */
 }
 
 button:hover {
@@ -123,16 +190,19 @@ button:hover {
 input {
   background-color: #0d1117;
   border: 1px solid #30363d;
-  color: #c9d1d9;
-  padding: 0.5rem;
+  color: #e6edf3;
+  padding: 10px 14px; /* Increased padding */
   border-radius: 6px;
+  font-size: 16px; /* Larger font size */
+  margin: 5px;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
 }
 
 .linked-list-display {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 15px;
+  margin: 25px 0;
   align-items: center;
   justify-content: center;
 }
@@ -143,39 +213,41 @@ input {
 }
 
 .pointer-left, .pointer-right {
-  margin: 0 0.5rem;
+  margin: 0 8px;
   color: #58a6ff;
 }
 
 .node-address {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 12px;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 14px;
   color: #8b949e;
-  margin-bottom: 0.25rem;
+  margin-bottom: 6px;
 }
 
 .node-data {
-  font-weight: bold;
-  margin-bottom: 0.25rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 16px;
 }
 
 .node-pointers {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 12px;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 14px;
   color: #8b949e;
 }
 
 .node-status {
-  font-size: 12px;
-  margin-top: 0.25rem;
+  font-size: 14px;
+  margin-top: 6px;
 }
 
 .diy-section, .explanation-section {
-  margin-top: 1.5rem;
+  margin-top: 25px;
   background-color: #161b22;
   border: 1px solid #30363d;
-  border-radius: 6px;
-  padding: 1rem;
+  border-radius: 8px;
+  padding: 15px;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
 }
 
 .diy-content, .explanation-content {
@@ -185,6 +257,10 @@ input {
 .diy-section h3, .explanation-section h3 {
   margin-top: 0;
   color: #58a6ff;
+  font-size: 20px; /* Larger font size */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .diy-section a {
@@ -209,9 +285,84 @@ input {
 .diy-section button:hover {
   background-color: #2ea043;
 }
+
 .placeholder {
-  font-size: 1.2rem;
+  font-size: 18px; /* Increased size */
   color: #8b949e;
   text-align: center;
-  margin-top: 2rem;
+  margin: 40px 0;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+}
+
+/* Position home button inline with header */
+.visualizer-home-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #21262d; /* Updated to match screenshot */
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  text-decoration: none;
+  font-family: "JetBrains Mono", "JetBrainsMono Nerd Font", monospace;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 100;
+}
+
+.visualizer-home-btn:hover {
+  background-color: #30363d;
+  border-color: #8b949e;
+}
+
+/* New back button styling */
+.visualizer-back-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #4A3F6E; /* Purple theme color */
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 100;
+}
+
+.visualizer-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background-color: #5A4F7E;
+}
+
+/* Ensure the visualizer container has appropriate positioning for the button */
+.visualizer-container {
+  position: relative;
+  padding-top: 0; /* Remove the visualizer container padding since button isn't absolutely positioned anymore */
+}
+
+/* If you need theme consistency between pages: */
+.visualizer-container {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Memory pool heading */
+.visualization h3 {
+  font-size: 24px; /* Larger font size */
+  margin-top: 25px;
+  margin-bottom: 20px;
+  color: #e6edf3;
+  font-weight: 500;
+  text-align: left;
 }

@@ -1,0 +1,294 @@
+.doubly-linked-list-page {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  color: #e6e6e6;
+  background-color: #0f0f1a;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(65, 40, 120, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(40, 80, 120, 0.2) 0%, transparent 40%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-header {
+  text-align: center;
+  width: 100%;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 60px; /* Adjusted to accommodate the button */
+}
+
+.page-header h1 {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 2rem;
+  font-weight: 800; /* Extra bold weight */
+  margin: 0;
+  color: #ffffff;
+  background: linear-gradient(90deg, #f0f0f0, #ffffff, #e0e0e0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  letter-spacing: 1px;
+  text-transform: uppercase; /* Optional: adds more emphasis */
+}
+
+/* Even split layout with center scrollbar */
+.content-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.panel {
+  flex: 1;
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 20px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(130, 91, 241, 0.4) transparent;
+}
+
+/* Horizontal visualization layout */
+.visualization-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.visualization-panel > * {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Make the nodes visualizer display in a single horizontal line */
+
+
+/* Fix arrow display to be horizontal */
+.pointer-left, .pointer-right {
+  display: inline-flex !important;
+  align-items: center !important;
+  position: relative;
+}
+
+/* Force node container to display nodes in a single horizontal line */
+.node-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  overflow-x: auto !important;
+  width: 100%;
+  padding: 20px 0;
+  margin: 10px 0;
+}
+
+/* Add arrows between nodes */
+.node-container > div:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -15px;
+  color: rgba(130, 91, 241, 0.8);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Fix node display to be side-by-side */
+.node-active, .node-inactive {
+  flex: 0 0 auto !important; 
+  display: inline-block !important;
+  margin: 0 30px 0 0 !important;
+  position: relative !important;
+}
+
+/* Ensure arrows connect nodes horizontally */
+.node-container > *:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(130, 91, 241, 0.8);
+  font-size: 1.2rem;
+}
+
+/* Make bidirectional arrows visible */
+.node-container > div:not(:first-child)::before {
+  content: "←";
+  position: absolute;
+  left: -15px;
+  color: rgba(130, 91, 241, 0.8);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Back pointers for doubly linked list */
+.node-container > *:not(:first-child)::before {
+  content: "←";
+  position: absolute;
+  left: -20px;
+  top: calc(50% + 20px);
+  transform: translateY(-50%);
+  color: rgba(130, 91, 241, 0.8);
+  font-size: 1.2rem;
+}
+
+/* Ensure node layout is horizontal */
+.node {
+  position: relative; /* For arrow positioning */
+  display: block !important;
+  text-align: center !important;
+  width: 120px !important; /* Fixed width for consistent layout */
+  margin: 0 10px !important;
+}
+
+/* Remove any potential float attributes that might be causing stacking */
+.node-container > * {
+  float: none !important;
+}
+
+/* Remove any potential margins or positioning that could be affecting layout */
+.node-data, .node-address, .node-pointers {
+  margin: 5px 0 !important;
+}
+
+/* Ensure each node has enough width */
+.node-active, .node-inactive {
+  min-width: 140px !important;
+  width: auto !important;
+  text-align: center !important;
+}
+
+/* Adjust padding for better appearance */
+.node-container {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Hide any overflow from the node itself that might cause stacking */
+.node {
+  overflow: visible !important;
+}
+
+/* Styling for custom scrollbars */
+.panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background: rgba(130, 91, 241, 0.4);
+  border-radius: 5px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 91, 241, 0.6);
+}
+
+/* Horizontal scrollbar for node containers */
+.node-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.node-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.node-container::-webkit-scrollbar-thumb {
+  background: rgba(130, 91, 241, 0.4);
+  border-radius: 5px;
+}
+
+/* Panel-specific styling */
+.code-panel {
+  border-right: 1px solid rgba(130, 91, 241, 0.2);
+}
+
+.visualization-panel {
+  border-left: 1px solid rgba(130, 91, 241, 0.2);
+}
+
+h2 {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #e0e0e0;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(130, 91, 241, 0.3);
+  font-weight: 600; /* Semi-bold for subheadings */
+}
+
+/* Memory grid horizontal layout */
+.memory-grid {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.memory-grid > div {
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* Home button styling - updated to make sure it's visible */
+.home-button {
+  position: fixed; /* Change from absolute to fixed for consistent positioning */
+  top: 20px;
+  left: 20px;
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: rgba(130, 91, 241, 0.6);
+  color: #ffffff;
+  border: 1px solid rgba(130, 91, 241, 0.8);
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(130, 91, 241, 0.4);
+}
+
+.home-button:hover {
+  background-color: rgba(130, 91, 241, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(130, 91, 241, 0.6);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .content-layout {
+    flex-direction: column;
+  }
+  
+  .panel {
+    height: auto;
+    max-height: none;
+    border: none;
+  }
+  
+  .code-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(130, 91, 241, 0.2);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .visualization-panel {
+    border-left: none;
+  }
+}
+
+/* Make sure to import the font with the correct weight */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');

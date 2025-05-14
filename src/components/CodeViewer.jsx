@@ -1,29 +1,36 @@
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import './SectionWrapper.css';
 
-//Syntax Highlighter is kinda saving our ass and making it pretty, thanks prism
-const CodeViewer = ({ code}) => {
-  return (
-    <div className="code-viewer">
-      <SyntaxHighlighter 
-        language="cpp" 
-        style={vscDarkPlus}
-        showLineNumbers={true}
-        wrapLines={true}
-        customStyle={{
-          backgroundColor: '#161b22',
-          margin: 0,
-          padding: '1rem',
-          borderRadius: '6px',
-          fontSize: '18px',
-          overflow: 'auto',
-          maxHeight: 'calc(100vh - 2rem)'
-        }}
-      >
-        {code}
-      </SyntaxHighlighter>
-    </div>
-  );
-};
+const CodeViewer = ({ code, highlightedLine }) => (
+  <div className="section-container">
+    <div className="homepage-bg-overlay" />
+    <SyntaxHighlighter
+      language="cpp"
+      style={vscDarkPlus}
+      showLineNumbers
+      wrapLines
+      wrapLongLines
+      lineProps={lineNumber => ({
+        style: {
+          display: 'block',
+          background:
+            highlightedLine === lineNumber + 1
+              ? 'rgba(130,91,241,0.2)'
+              : 'transparent'
+        }
+      })}
+      customStyle={{
+        background: 'transparent',
+        margin: 0,
+        padding: '1rem',
+        borderRadius: '8px',
+        fontSize: '1rem'
+      }}
+    >
+      {code}
+    </SyntaxHighlighter>
+  </div>
+);
 
 export default CodeViewer;
