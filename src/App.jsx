@@ -91,27 +91,28 @@ function App() {
 
   // Function to update visualization based on code changes
   const handleCodeChange = (nodesData) => {
-    if (Array.isArray(nodesData) && memoryPoolAddresses.length > 0) {
-      // Track used indices to avoid duplicates
-      const usedIndices = new Set();
-      
-      const newNodes = nodesData.map((node, index) => {
-        // Find first available index
-        let memoryIndex = index;
-        while (usedIndices.has(memoryIndex % 10)) {
-          memoryIndex++;
-        }
-        memoryIndex = memoryIndex % 10;
-        usedIndices.add(memoryIndex);
-        
-        return {
-          data: node.data,
-          address: memoryPoolAddresses[memoryIndex],
-          memoryIndex: memoryIndex,
-          prev: index > 0 ? (index - 1) % 10 : null,
-          next: index < nodesData.length - 1 ? (index + 1) % 10 : null
-        };
-      });
+    if (!Array.isArray(nodesData) || memoryPoolAddresses.length === 0) return;
+
+    // First pass: pick a unique memory slot for each node
+    const used = new Set();
+    const memIdx = nodesData.map((_, i) => {
+      let candidate = i;
+      while (used.has(candidate % 10)) candidate++;
+      candidate %= 10;
+      used.add(candidate);
+      return candidate;
+    });
+
+    // Second pass: build the node objects with correct prev/next
+    const newNodes = nodesData.map((node, i) => ({
+      data: node.data,
+      address: memoryPoolAddresses[memIdx[i]],
+      memoryIndex: memIdx[i],
+      prev: i > 0 ? memIdx[i - 1] : null,
+      next: i < nodesData.length - 1 ? memIdx[i + 1] : null,
+    }));
+    setNodes(newNodes);
+  };
       setNodes(newNodes);
     }
   };
