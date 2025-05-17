@@ -7,6 +7,8 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import '../styles/code-highlighter.css';
 import '../styles/TreeVisualizer.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+import TreeTypeSelector from './TreeTypeSelector';
 
 // Tree visualization styles
 const nodeSize = { x: 140, y: 140 };
@@ -870,7 +872,15 @@ const algorithmInfo = {
   }
 };
 
-const TreeVisualizer = () => {
+const TreeVisualizer = ({ showBST = false }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  if (location.pathname === '/trees' && !showBST) {
+    return <TreeTypeSelector />;
+  }
+
+
   const [tree, setTree] = useState(null);
   const [operation, setOperation] = useState("Select Operation");
   const [value, setValue] = useState("");
@@ -886,10 +896,12 @@ const TreeVisualizer = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showHelperInfo, setShowHelperInfo] = useState(true);
   
+  
   const animationFrame = useRef(null);
   const animationState = useRef({ index: 0, results: [] });
   const dropdownRef = useRef(null);
   const treeContainerRef = useRef(null);
+  
   
   // Hide helper info after a delay
   useEffect(() => {
@@ -1174,27 +1186,47 @@ const TreeVisualizer = () => {
   };
   
   // Get the code for current operation
-  const getOperationCode = () => {
-    switch (operation) {
-      case "Insert":
-        return `function insert(root, value) {
-  if (root === null) {
-    return { name: value.toString(), children: [] };
-  }
+const getOperationCode = (op) => {
+  const codes = {
+    "Insert": `// BST Insert Implementation
+function insert(root, value) {
+  if (!root) return new Node(value);
   
-  if (value < parseInt(root.name)) {
-    root.children = root.children || [];
-    root.children[0] = insert(root.children[0], value);
-  } 
-  else if (value > parseInt(root.name)) {
-    root.children = root.children || [];
-    root.children[1] = insert(root.children[1], value);
+  if (value < root.value) {
+    root.left = insert(root.left, value);
+  } else if (value > root.value) {
+    root.right = insert(root.right, value);
   }
   // Value already exists
   return root;
-}`;
-      case "Search":
-        return `function search(root, value) {
+}`,
+
+    "Delete": `// BST Delete Implementation
+function deleteNode(root, value) {
+  if (!root) return null;
+  
+  if (value < root.value) {
+    root.left = deleteNode(root.left, value);
+  } else if (value > root.value) {
+    root.right = deleteNode(root.right, value);
+  } else {
+    // Case 1: No children
+    if (!root.left && !root.right) return null;
+    
+    // Case 2: One child
+    if (!root.left) return root.right;
+    if (!root.right) return root.left;
+    
+    // Case 3: Two children
+    const successor = findMin(root.right);
+    root.value = successor;
+    root.right = deleteNode(root.right, successor);
+  }
+  return root;
+}`,
+
+      "Search":
+        `function search(root, value) {
   if (root === null) {
     return false;
   }
@@ -1210,48 +1242,10 @@ const TreeVisualizer = () => {
     return root.children && root.children[1] ? 
       search(root.children[1], value) : false;
   }
-}`;
-      case "Delete":
-        return `function delete(root, value) {
-  if (root === null) {
-    return null;
-  }
-  
-  if (value < parseInt(root.name)) {
-    if (root.children && root.children[0]) {
-      root.children[0] = delete(root.children[0], value);
-    }
-  }
-  else if (value > parseInt(root.name)) {
-    if (root.children && root.children[1]) {
-      root.children[1] = delete(root.children[1], value);
-    }
-  }
-  else {
-    // Node with no children
-    if (!root.children || root.children.length === 0) {
-      return null;
-    }
-    
-    // Node with one child
-    if (!root.children[0]) {
-      return root.children[1];
-    }
-    
-    if (!root.children[1]) {
-      return root.children[0];
-    }
-    
-    // Node with two children
-    const successor = findMinValue(root.children[1]);
-    root.name = successor;
-    root.children[1] = delete(root.children[1], parseInt(successor));
-  }
-  
-  return root;
-}`;
-      case "In-Order":
-        return `function inOrder(node) {
+}`,
+
+      "In-Order":
+         `function inOrder(node) {
   if (node === null) return;
   
   // Traverse left subtree
@@ -1267,8 +1261,8 @@ const TreeVisualizer = () => {
     inOrder(node.children[1]);
   }
 }`;
-      case "Pre-Order":
-        return `function preOrder(node) {
+      "Pre-Order":
+        `function preOrder(node) {
   if (node === null) return;
   
   // Visit node
@@ -1283,9 +1277,9 @@ const TreeVisualizer = () => {
   if (node.children && node.children[1]) {
     preOrder(node.children[1]);
   }
-}`;
-      case "Post-Order":
-        return `function postOrder(node) {
+}`,
+      "Post-Order":
+         `function postOrder(node) {
   if (node === null) return;
   
   // Traverse left subtree
@@ -1300,9 +1294,9 @@ const TreeVisualizer = () => {
   
   // Visit node
   console.log(node.name);
-}`;
-      case "Level-Order":
-        return `function levelOrder(root) {
+}`,
+      "Level-Order":
+        `function levelOrder(root) {
   if (root === null) return;
   
   const queue = [root];
@@ -1323,13 +1317,14 @@ const TreeVisualizer = () => {
       queue.push(node.children[1]);
     }
   }
-}`;
-      default:
-        return "// Select an operation to view code";
-    }
+}`
+  };
+        return codes[op];
+    
   };
   
   return (
+    
     <div className="tree-visualizer-container">
       <div className="sorting-bg-overlay"></div>
       <div className="floating-orb orb-1"></div>
@@ -1345,9 +1340,34 @@ const TreeVisualizer = () => {
           <FaHome size={16} />
           <span>Home</span>
         </Link>
-        <h1 style={{ flex: 1, textAlign: 'center', fontSize: '1.5rem' }}>Binary Search Tree Visualization</h1>
+        <h1 style={{ flex: 1, textAlign: 'center', fontSize: '1.5rem' }}>
+          {location.pathname.includes('avl') ? 'AVL Tree' : 
+          location.pathname.includes('redblack') ? 'Red-Black Tree' : 
+          'Binary Search Tree'} Visualization
+        </h1>
       </motion.header>
       
+      <div className="tree-type-navigation">
+        <button 
+          onClick={() => navigate('/trees/bst')} 
+          className={location.pathname.includes('bst') ? 'active' : ''}
+        >
+          Binary Search Tree
+        </button>
+        <button 
+          onClick={() => navigate('/trees/avl')} 
+          className={location.pathname.includes('avl') ? 'active' : ''}
+        >
+          AVL Tree
+        </button>
+        <button 
+          onClick={() => navigate('/trees/redblack')} 
+          className={location.pathname.includes('redblack') ? 'active' : ''}
+        >
+          Red-Black Tree
+        </button>
+      </div>
+
       <div className="tree-controls">
         <div className="control-group">
           <div className="dropdown-container" ref={dropdownRef}>
@@ -1459,29 +1479,32 @@ const TreeVisualizer = () => {
       )}
       
       {showHelperInfo && (
-        <motion.div 
-          className="helper-info"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <div className="helper-info-header">
-            <h3>🌲 Binary Search Tree Visualizer</h3>
-            <button onClick={() => setShowHelperInfo(false)} className="close-button">×</button>
-          </div>
-          <div className="helper-info-content">
-            <p><strong>Getting Started:</strong></p>
-            <ul>
-              <li>Use the <strong>Create Sample Tree</strong> button to start with a balanced tree</li>
-              <li>Try the <strong>Generate Random Tree</strong> button for a unique random tree (up to 19 nodes)</li>
-              <li>Try <strong>Insert</strong>, <strong>Search</strong>, or <strong>Delete</strong> operations with specific values</li>
-              <li>Explore different tree <strong>Traversals</strong> to see how nodes are visited</li>
-              <li>Adjust <strong>Speed</strong> to control animation pace</li>
-              <li>Click and drag to <strong>Pan</strong>, use mouse wheel to <strong>Zoom</strong></li>
-            </ul>
-          </div>
-        </motion.div>
-      )}
+  <motion.div 
+    className="helper-info"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+  >
+    <div className="helper-info-header">
+      <h3>
+        {location.pathname.includes('avl') ? 'AVL Tree' : 
+         location.pathname.includes('redblack') ? 'Red-Black Tree' : 
+         'Binary Search Tree'} Visualizer
+      </h3>
+      <button onClick={() => setShowHelperInfo(false)} className="close-button">×</button>
+    </div>
+    <div className="helper-info-content">
+      <p><strong>Getting Started:</strong></p>
+      <ul>
+        <li>Use the <strong>Create Sample Tree</strong> button to start with a balanced tree</li>
+        <li>Try <strong>Insert</strong>, <strong>Search</strong>, or <strong>Delete</strong> operations</li>
+        <li>Explore different tree <strong>Traversals</strong></li>
+        <li>Adjust <strong>Speed</strong> to control animation pace</li>
+        <li>Click and drag to <strong>Pan</strong>, use mouse wheel to <strong>Zoom</strong></li>
+      </ul>
+    </div>
+  </motion.div>
+)}
       
       <div className="tree-visualization-area">
         {showInfo && operation !== "Select Operation" && (
