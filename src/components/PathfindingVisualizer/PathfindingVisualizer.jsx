@@ -89,12 +89,22 @@ class PathfindingVisualizer extends Component {
           const nodeId = `node-${i}-${j}`;
           const nodeElement = document.getElementById(nodeId);
           if (nodeElement) {
-            // Reset class
-            nodeElement.className = "node_";
+            // Reset class but preserve start/end status
+            const isStart = this.state.grid[i][j].isStart;
+            const isEnd = this.state.grid[i][j].isEnd;
             
-            // Remove all images within the node to ensure complete cleanup
-            const images = nodeElement.querySelectorAll('img');
-            images.forEach(img => img.remove());
+            if (isStart) {
+              nodeElement.className = "node_start";
+            } else if (isEnd) {
+              nodeElement.className = "node_end";
+            } else {
+              nodeElement.className = "node_";
+              
+              // Remove all images within the node to ensure complete cleanup
+              // But only for non-start, non-end nodes
+              const images = nodeElement.querySelectorAll('img');
+              images.forEach(img => img.remove());
+            }
           }
         }
       }
@@ -146,12 +156,33 @@ class PathfindingVisualizer extends Component {
       shortestPath: 0,
       currentStep: "Grid created. Drag start/end points or create walls."
     }, () => {
-      // Force update of node visuals
-      const startNode = document.getElementById(`node-${start_x}-${start_y}`);
-      const endNode = document.getElementById(`node-${end_x}-${end_y}`);
-      
-      if (startNode) startNode.className = "node_start";
-      if (endNode) endNode.className = "node_end";
+      // Force update of node visuals with a slight delay to ensure DOM is ready
+      setTimeout(() => {
+        const startNode = document.getElementById(`node-${start_x}-${start_y}`);
+        const endNode = document.getElementById(`node-${end_x}-${end_y}`);
+        
+        if (startNode) {
+          startNode.className = "node_start";
+          // Make sure any existing start image stays visible
+          const startImg = startNode.querySelector('.start-image');
+          if (startImg) {
+            startImg.style.visibility = 'visible';
+            startImg.style.opacity = '1';
+            startImg.style.display = 'block';
+          }
+        }
+        
+        if (endNode) {
+          endNode.className = "node_end";
+          // Make sure any existing end image stays visible
+          const endImg = endNode.querySelector('.end-image');
+          if (endImg) {
+            endImg.style.visibility = 'visible';
+            endImg.style.opacity = '1';
+            endImg.style.display = 'block';
+          }
+        }
+      }, 50); // Small delay to ensure DOM updates
     });
   };
   
