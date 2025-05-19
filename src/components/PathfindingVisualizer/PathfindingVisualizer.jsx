@@ -143,7 +143,15 @@ class PathfindingVisualizer extends Component {
       end_node: [end_x, end_y],
       number_of_nodes: arr.length * arr[0].length,
       visited: 0,
-      shortestPath: 0
+      shortestPath: 0,
+      currentStep: "Grid created. Drag start/end points or create walls."
+    }, () => {
+      // Force update of node visuals
+      const startNode = document.getElementById(`node-${start_x}-${start_y}`);
+      const endNode = document.getElementById(`node-${end_x}-${end_y}`);
+      
+      if (startNode) startNode.className = "node_start";
+      if (endNode) endNode.className = "node_end";
     });
   };
   

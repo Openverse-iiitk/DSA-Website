@@ -40,11 +40,13 @@ table {
 .node_start {
   background-color: transparent;
   position: relative;
+  border: 2px solid #2A623D; /* Green border for start node */
 }
 
 .node_end {
   background-color: transparent;
   position: relative;
+  border: 2px solid #A63D40; /* Red border for end node */
 }
 
 .node-image {
@@ -55,6 +57,14 @@ table {
   height: 100%;
   object-fit: contain;
   z-index: 2;
+  user-select: none;
+  pointer-events: none;
+  display: block !important; /* Force display */
+}
+
+.start-image, .end-image {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .node_wall {
@@ -83,19 +93,30 @@ table {
   pointer-events: none;
 }
 
-@keyframes pulse {
+@keyframes visited {
   0% {
-    background-color: grey;
+    transform: scale(0.3);
+    background-color: rgba(0, 0, 66, 0.75);
+    border-radius: 100%;
+  }
+  50% {
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 159, 0.75);
   }
   100% {
-    background-color: #8a918a;
+    transform: scale(1);
+    background-color: rgba(4, 0, 255, 0.5);
   }
 }
 
 .node_visited {
   background-color: rgba(4, 0, 255, 0.5);
   animation-name: visited;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
   animation-iteration-count: 1;
   animation-direction: alternate;
 }
@@ -120,20 +141,36 @@ table {
 }
 
 .node_path {
-  background-color: greenyellow;
+  background-color: #f8d16e; /* Use a bright gold color for the path */
   animation-name: path_anime;
-  animation-duration: 2s;
+  animation-duration: 1.2s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
-  animation-fill-mode: none;
+  animation-fill-mode: forwards;
   animation-play-state: running;
 }
 
 @keyframes path_anime {
   0% {
-    transform: scale(0.3);
-    background-color: red;
+    transform: scale(0.6);
+    background-color: rgba(255, 171, 25, 0.75);
+    border-radius: 100%;
+  }
+  50% {
+    transform: scale(1.1);
+    background-color: rgba(255, 215, 0, 0.9);
+  }
+  100% {
+    transform: scale(1);
+    background-color: #f8d16e;
+  }
+}
+
+@keyframes path_anime_old {
+  0% {
+    transform: scale(0.6);
+    background-color: rgba(255, 254, 106, 0.75);
     border-radius: 100%;
   }
   50% {

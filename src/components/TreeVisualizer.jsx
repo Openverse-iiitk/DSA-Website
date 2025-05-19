@@ -1013,14 +1013,18 @@ const TreeVisualizer = () => {
       switch (operation) {
         case "Insert":
           result = bstInsert(tree, parseInt(value));
-          if (result.tree) setTree(result.tree);
+          // Similar to delete, ensure we don't set a null tree
+          setTree(result.tree !== undefined ? result.tree : { name: "", children: [] });
           break;
         case "Search":
           result = bstSearch(tree, parseInt(value));
           break;
         case "Delete":
           result = bstDelete(tree, parseInt(value));
-          if (result.tree) setTree(result.tree);
+          // Important: We need to check if result.tree exists AND is not null
+          // If tree becomes empty, set it to an empty object with children array
+          // so the visualization can still render properly
+          setTree(result.tree !== undefined ? result.tree : { name: "", children: [] });
           break;
         case "In-Order":
           result = inOrderTraversal(tree);
@@ -1113,7 +1117,7 @@ const TreeVisualizer = () => {
   
   const clearTree = () => {
     stopAnimation();
-    setTree(null);
+    setTree({ name: "", children: [] }); // Use empty tree object instead of null
     setCurrentStep("");
     setCurrentLine(0);
     setTraversalResult([]);
