@@ -5,6 +5,7 @@ import { FaHome } from 'react-icons/fa';
 import Tree from 'react-d3-tree';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { simpleBSTDelete, copyTree } from './SimpleBSTOperations';
 import '../styles/code-highlighter.css';
 import '../styles/TreeVisualizer.css';
 
@@ -156,66 +157,221 @@ const bstInsert = (root, value) => {
   const results = [];
   let currentStep = "";
   
-  const insertNode = (node, value, path = []) => {
+  // Create a deep copy of the tree to avoid mutating the original
+  const treeCopy = root ? JSON.parse(JSON.stringify(root)) : null;
+  
+  const insertNode = (node, value, path = [], depth = 0) => {
+    // Add a delay effect for visualization by tracking depth
+    const animationDelay = depth * 0.5;
+    
+    // Case 1: Empty tree or leaf node reached
     if (!node) {
-      currentStep = `Inserting ${value} at current position`;
+      currentStep = `Creating new node with value ${value}`;
       results.push({ 
-        tree: { name: value.toString(), children: [] },
+        tree: { name: value.toString(), children: [], highlight: true, isNew: true },
         step: currentStep,
-        line: 4
+        line: 4,
+        animationDelay
       });
-      return { name: value.toString(), children: [] };
+      return { name: value.toString(), children: [], highlight: true, isNew: true };
     }
     
     const nodeCopy = { ...node };
     const nodeValue = parseInt(node.name);
     
+    // Highlight the current node being examined
+    nodeCopy.highlight = true;
+    
+    // Show comparison step - visual examination
+    results.push({
+      tree: addHighlightToPath(JSON.parse(JSON.stringify(treeCopy)), path, value),
+      step: `Comparing ${value} with node ${nodeValue}`,
+      line: 6,
+      animationDelay
+    });
+    
+    // Case 2: Value less than current node - go left
     if (value < nodeValue) {
       currentStep = `${value} < ${nodeValue}, going left`;
+      
+      // Highlight the path we're taking
+      results.push({ 
+        tree: addHighlightToPath(JSON.parse(JSON.stringify(treeCopy)), path, value, 'left'),
+        step: currentStep,
+        line: 8,
+        animationDelay: animationDelay + 0.2
+      });
+      
       path.push('left');
-      results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
-        step: currentStep,
-        line: 7 
-      });
-      
       nodeCopy.children = nodeCopy.children || [];
-      nodeCopy.children[0] = insertNode(nodeCopy.children[0], value, path);
+      nodeCopy.children[0] = insertNode(nodeCopy.children[0], value, path, depth + 1);
       
-    } else if (value > nodeValue) {
+    } 
+    // Case 3: Value greater than current node - go right
+    else if (value > nodeValue) {
       currentStep = `${value} > ${nodeValue}, going right`;
-      path.push('right');
+      
+      // Highlight the path we're taking
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: addHighlightToPath(JSON.parse(JSON.stringify(treeCopy)), path, value, 'right'),
         step: currentStep,
-        line: 13
+        line: 14,
+        animationDelay: animationDelay + 0.2
       });
       
+      path.push('right');
       nodeCopy.children = nodeCopy.children || [];
-      nodeCopy.children[1] = insertNode(nodeCopy.children[1], value, path);
+      nodeCopy.children[1] = insertNode(nodeCopy.children[1], value, path, depth + 1);
       
-    } else {
+    } 
+    // Case 4: Value already exists
+    else {
       currentStep = `${value} already exists in the tree`;
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: addHighlightToPath(JSON.parse(JSON.stringify(treeCopy)), path, value, 'duplicate'),
         step: currentStep,
-        line: 19
+        line: 20,
+        animationDelay: animationDelay + 0.2
       });
     }
     
     return nodeCopy;
   };
   
-  const newRoot = insertNode(root, value);
+  // Helper function to highlight the path being traversed
+  const addHighlightToPath = (tree, path, value, direction = null) => {
+    if (!tree) return tree;
+    
+    let current = tree;
+    let parent = null;
+    let index = -1;
+    
+    // Traverse the path to find the current node
+    for (let i = 0; i < path.length; i++) {
+      parent = current;
+      index = path[i] === 'left' ? 0 : 1;
+      
+      // Ensure children array exists
+      if (!current.children) current.children = [];
+      if (!current.children[index]) break;
+      
+      current = current.children[index];
+      
+      // Add highlight attribute to nodes in the path
+      current.pathHighlight = true;
+    }
+    
+    // Highlight the current node
+    if (current) current.highlight = true;
+    
+    // If we're visualizing a direction (left/right), show that too
+    if (direction && parent && parent.children) {
+      // For a new node that doesn't exist yet
+      if ((direction === 'left' && !parent.children[0]) || 
+          (direction === 'right' && !parent.children[1])) {
+        // Visual indicator for where the new node will go
+        const insertionPoint = {
+          name: value.toString(),
+          isNew: true,
+          highlight: true,
+          pathHighlight: true,
+          children: []
+        };
+        
+        if (direction === 'left') {
+          parent.children[0] = insertionPoint;
+        } else if (direction === 'right') {
+          parent.children[1] = insertionPoint;
+        }
+      } 
+      // For a duplicate value
+      else if (direction === 'duplicate') {
+        current.duplicate = true;
+      }
+    }
+    
+    return tree;
+  };
   
-  currentStep = "Insert operation complete";
+  // Start the insertion
+  let newRoot;
+  if (!treeCopy) {
+    // Special case: Inserting into an empty tree
+    currentStep = `Creating a new tree with root node ${value}`;
+    results.push({
+      tree: { name: value.toString(), children: [], isNew: true, highlight: true },
+      step: currentStep,
+      line: 3,
+      animationDelay: 0
+    });
+    newRoot = { name: value.toString(), children: [], highlight: true };
+  } else {
+    // Regular insertion into existing tree
+    currentStep = `Starting insertion of ${value} at the root`;
+    results.push({
+      tree: JSON.parse(JSON.stringify(treeCopy)),
+      step: currentStep,
+      line: 2,
+      animationDelay: 0
+    });
+    newRoot = insertNode(treeCopy, value);
+  }
+  
+  // Final state with the newly inserted node
+  const finalTree = JSON.parse(JSON.stringify(newRoot));
+  // Remove all temporary highlight attributes for the final result
+  removeHighlights(finalTree);
+  // But keep highlight on the newly inserted node
+  highlightValueInTree(finalTree, value);
+  
+  currentStep = `Successfully inserted ${value} into the tree`;
   results.push({ 
-    tree: JSON.parse(JSON.stringify(newRoot)), 
+    tree: finalTree, 
     step: currentStep,
-    line: 24
+    line: 25,
+    animationDelay: results.length * 0.3  // Delay proportional to steps
   });
   
-  return { tree: newRoot, results };
+  return { tree: finalTree, results };
+};
+
+// Helper function to remove highlights from a tree
+const removeHighlights = (node) => {
+  if (!node) return;
+  
+  // Remove highlight attributes
+  delete node.highlight;
+  delete node.pathHighlight;
+  delete node.isNew;
+  delete node.duplicate;
+  
+  // Recursive call for children
+  if (node.children) {
+    node.children.forEach(child => {
+      if (child) removeHighlights(child);
+    });
+  }
+};
+
+// Helper function to highlight a specific value in the tree
+const highlightValueInTree = (node, targetValue) => {
+  if (!node) return false;
+  
+  if (parseInt(node.name) === targetValue) {
+    node.highlight = true;
+    node.isNew = true;
+    return true;
+  }
+  
+  if (node.children) {
+    for (let i = 0; i < node.children.length; i++) {
+      if (node.children[i] && highlightValueInTree(node.children[i], targetValue)) {
+        return true;
+      }
+    }
+  }
+  
+  return false;
 };
 
 // Binary Search Tree Search
@@ -308,131 +464,254 @@ const bstDelete = (root, value) => {
   const results = [];
   let currentStep = "";
   
+  // Create a deep copy of the tree to avoid mutating the original
+  const treeCopy = root ? JSON.parse(JSON.stringify(root)) : null;
+  
+  // Special case: empty tree
+  if (!treeCopy) {
+    currentStep = "Tree is empty, nothing to delete";
+    results.push({
+      tree: { name: "", children: [] },
+      step: currentStep,
+      line: 2,
+      animationDelay: 0
+    });
+    return { tree: { name: "", children: [] }, results };
+  }
+  
+  // Track if value was found in the tree
+  let valueFound = false;
+  
+  // Initial step: start the search
+  currentStep = `Searching for node with value ${value} to delete`;
+  results.push({
+    tree: JSON.parse(JSON.stringify(treeCopy)),
+    step: currentStep,
+    line: 1,
+    animationDelay: 0
+  });
+  
+  // Helper function to find minimum value node in a subtree
   const findMinValue = (node) => {
+    // Check if node is null first
+    if (!node) {
+      console.error("findMinValue called with null node");
+      return null;
+    }
+    
     let current = node;
-    while (current.children && current.children[0]) {
+    
+    // Traverse left as far as possible to find minimum
+    while (current && current.children && current.children[0]) {
       current = current.children[0];
     }
-    return current.name;
+    
+    // Make sure current node is not null before accessing its name
+    return current ? current.name : null;
   };
   
-  const deleteNode = (node, value) => {
+  // Main delete function with path tracking
+  const deleteNode = (node, value, path = []) => {
+    // Case 1: Node not found
     if (!node) {
-      currentStep = `Value ${value} not found for deletion`;
-      results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
-        step: currentStep,
-        line: 4
-      });
       return null;
     }
     
     const nodeValue = parseInt(node.name);
     
+    // Highlight current node being examined
+    node.highlight = true;
+    results.push({
+      tree: JSON.parse(JSON.stringify(treeCopy)),
+      step: `Examining node ${nodeValue}`,
+      line: 6,
+      animationDelay: path.length * 0.3
+    });
+    node.highlight = false;
+    
+    // Case 2: Search left subtree
     if (value < nodeValue) {
-      currentStep = `${value} < ${nodeValue}, going left to delete`;
+      currentStep = `${value} < ${nodeValue}, searching left subtree`;
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: JSON.parse(JSON.stringify(treeCopy)),
         step: currentStep,
-        line: 9
+        line: 9,
+        animationDelay: path.length * 0.3 + 0.2
       });
       
       if (node.children && node.children[0]) {
-        node.children[0] = deleteNode(node.children[0], value);
+        node.children[0] = deleteNode(node.children[0], value, [...path, 'left']);
+      } else {
+        // Node doesn't have a left child, so value can't be found
+        results.push({
+          tree: JSON.parse(JSON.stringify(treeCopy)),
+          step: `Left child doesn't exist, ${value} not found in this path`,
+          line: 11,
+          animationDelay: path.length * 0.3 + 0.3
+        });
       }
-      return node;
-      
-    } else if (value > nodeValue) {
-      currentStep = `${value} > ${nodeValue}, going right to delete`;
+    } 
+    // Case 3: Search right subtree
+    else if (value > nodeValue) {
+      currentStep = `${value} > ${nodeValue}, searching right subtree`;
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: JSON.parse(JSON.stringify(treeCopy)),
         step: currentStep,
-        line: 14
+        line: 14,
+        animationDelay: path.length * 0.3 + 0.2
       });
       
       if (node.children && node.children[1]) {
-        node.children[1] = deleteNode(node.children[1], value);
+        node.children[1] = deleteNode(node.children[1], value, [...path, 'right']);
+      } else {
+        // Node doesn't have a right child, so value can't be found
+        results.push({
+          tree: JSON.parse(JSON.stringify(treeCopy)),
+          step: `Right child doesn't exist, ${value} not found in this path`,
+          line: 16,
+          animationDelay: path.length * 0.3 + 0.3
+        });
       }
-      return node;
+    } 
+    // Case 4: Found the node to delete
+    else {
+      valueFound = true;
+      // Visual step: highlight node found for deletion
+      node.highlight = true;
+      node.toDelete = true;
       
-    } else {
-      // Node to delete found
-      currentStep = `Found node with value ${value} to delete`;
-      results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
-        step: currentStep,
-        line: 20
+      results.push({
+        tree: JSON.parse(JSON.stringify(treeCopy)),
+        step: `Found node with value ${value} to delete`,
+        line: 20,
+        animationDelay: path.length * 0.3 + 0.3
       });
       
-      // Case 1: No children
-      if (!node.children || (node.children.length === 0)) {
-        currentStep = `Node ${value} has no children, removing it`;
+      // Case 4.1: Node has no children (leaf node)
+      if (!node.children || node.children.length === 0 || 
+          (!node.children[0] && !node.children[1])) {
+        currentStep = `Node ${value} is a leaf node, simply removing it`;
+        
         results.push({ 
-          tree: JSON.parse(JSON.stringify(root)),
+          tree: JSON.parse(JSON.stringify(treeCopy)),
           step: currentStep,
-          line: 23
+          line: 23,
+          animationDelay: path.length * 0.3 + 0.4
         });
+        
         return null;
       }
       
-      // Case 2: One child
+      // Case 4.2: Node has only right child
       if (!node.children[0]) {
         currentStep = `Node ${value} has only right child, replacing with right child`;
+        
+        if (node.children[1]) {
+          node.children[1].highlight = true;
+        }
+        
         results.push({ 
-          tree: JSON.parse(JSON.stringify(root)), 
+          tree: JSON.parse(JSON.stringify(treeCopy)),
           step: currentStep,
-          line: 28
+          line: 28,
+          animationDelay: path.length * 0.3 + 0.4
         });
+        
         return node.children[1];
       }
       
+      // Case 4.3: Node has only left child
       if (!node.children[1]) {
         currentStep = `Node ${value} has only left child, replacing with left child`;
+        
+        if (node.children[0]) {
+          node.children[0].highlight = true;
+        }
+        
         results.push({ 
-          tree: JSON.parse(JSON.stringify(root)), 
+          tree: JSON.parse(JSON.stringify(treeCopy)),
           step: currentStep,
-          line: 33
+          line: 33,
+          animationDelay: path.length * 0.3 + 0.4
         });
+        
         return node.children[0];
       }
       
-      // Case 3: Two children
+      // Case 4.4: Node has two children
       currentStep = `Node ${value} has two children, finding successor`;
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: JSON.parse(JSON.stringify(treeCopy)),
         step: currentStep,
-        line: 39
+        line: 39,
+        animationDelay: path.length * 0.3 + 0.4
       });
       
+      // Find the successor (minimum value in right subtree)
       const successor = findMinValue(node.children[1]);
+      
       currentStep = `Found successor ${successor} for node ${value}`;
       results.push({ 
-        tree: JSON.parse(JSON.stringify(root)), 
+        tree: JSON.parse(JSON.stringify(treeCopy)),
         step: currentStep,
-        line: 41
+        line: 41,
+        animationDelay: path.length * 0.3 + 0.8
       });
       
+      // Replace the value and recursively delete the successor
       node.name = successor;
-      node.children[1] = deleteNode(node.children[1], parseInt(successor));
-      return node;
+      
+      // Visual step: node value replaced with successor
+      results.push({
+        tree: JSON.parse(JSON.stringify(treeCopy)),
+        step: `Replaced node value ${value} with successor ${successor}`,
+        line: 42,
+        animationDelay: path.length * 0.3 + 1.0
+      });
+      
+      // Now delete the successor from its original position
+      currentStep = `Now removing the successor ${successor} from its original position`;
+      results.push({
+        tree: JSON.parse(JSON.stringify(treeCopy)),
+        step: currentStep,
+        line: 43,
+        animationDelay: path.length * 0.3 + 1.2
+      });
+      
+      node.children[1] = deleteNode(node.children[1], parseInt(successor), [...path, 'right']);
     }
+    
+    return node;
   };
   
-  const newRoot = deleteNode(JSON.parse(JSON.stringify(root)), value);
+  // Perform the delete operation
+  const newRoot = deleteNode(treeCopy, value);
   
-  if (!newRoot) {
-    currentStep = "Tree is now empty";
-  } else {
-    currentStep = "Delete operation complete";
+  // Check if value was found
+  if (!valueFound) {
+    results.push({
+      tree: JSON.parse(JSON.stringify(treeCopy)),
+      step: `Value ${value} was not found in the tree`,
+      line: 48,
+      animationDelay: results.length * 0.2
+    });
+    
+    // Return the unchanged tree instead of null when value is not found
+    return { tree: treeCopy, results };
   }
   
+  // Final state after deletion
+  // Use an empty object with children array instead of null to prevent crashes
+  const finalTree = newRoot ? JSON.parse(JSON.stringify(newRoot)) : { name: "", children: [] };
+  
   results.push({ 
-    tree: newRoot || { name: "", children: [] }, 
-    step: currentStep,
-    line: 50
+    tree: finalTree, 
+    step: `Successfully deleted ${value} from the tree`,
+    line: 50,
+    animationDelay: results.length * 0.2
   });
   
-  return { tree: newRoot || null, results };
+  return { tree: finalTree, results };
 };
 
 // Tree Traversal - In-Order
@@ -978,12 +1257,39 @@ const TreeVisualizer = () => {
   }, [isAnimating]);
   
   const stopAnimation = () => {
-    if (animationFrame.current) {
-      cancelAnimationFrame(animationFrame.current);
-      animationFrame.current = null;
+    try {
+      // Cancel any pending animations
+      if (animationFrame.current) {
+        if (typeof animationFrame.current === 'number') {
+          cancelAnimationFrame(animationFrame.current);
+        } else {
+          clearTimeout(animationFrame.current);
+        }
+        animationFrame.current = null;
+      }
+      
+      // Ensure we preserve the final tree state if animation was in progress
+      const { results, index } = animationState.current;
+      if (results && results.length > 0 && index > 0) {
+        // Get the last processed animation step
+        const lastProcessedIndex = Math.min(index, results.length - 1);
+        const lastResult = results[lastProcessedIndex];
+        
+        // Update tree to this state if it has a tree property
+        if (lastResult && lastResult.hasOwnProperty('tree')) {
+          const finalTree = lastResult.tree || { name: "", children: [] };
+          setTree(finalTree);
+        }
+      }
+      
+      setIsAnimating(false);
+      setIsPaused(false);
+    } catch (error) {
+      console.error("Error stopping animation:", error);
+      // Ensure we still reset the animation state
+      setIsAnimating(false);
+      setIsPaused(false);
     }
-    setIsAnimating(false);
-    setIsPaused(false);
   };
   
   const togglePause = () => {
@@ -1010,21 +1316,29 @@ const TreeVisualizer = () => {
     }
     
     try {
+      // Make a backup of the current tree state
+      const treeCopy = tree ? copyTree(tree) : null;
+      
       switch (operation) {
         case "Insert":
           result = bstInsert(tree, parseInt(value));
-          // Similar to delete, ensure we don't set a null tree
-          setTree(result.tree !== undefined ? result.tree : { name: "", children: [] });
           break;
         case "Search":
           result = bstSearch(tree, parseInt(value));
           break;
         case "Delete":
-          result = bstDelete(tree, parseInt(value));
-          // Important: We need to check if result.tree exists AND is not null
-          // If tree becomes empty, set it to an empty object with children array
-          // so the visualization can still render properly
-          setTree(result.tree !== undefined ? result.tree : { name: "", children: [] });
+          try {
+            // Use the more robust simpleBSTDelete function from SimpleBSTOperations.js
+            result = simpleBSTDelete(tree, parseInt(value));
+            // Let the animation handle the tree update through updateAnimation
+          } catch (error) {
+            console.error("Error in delete operation:", error);
+            setShowError(true);
+            setTimeout(() => setShowError(false), 3000);
+            // Restore the original tree if there was an error
+            setTree(treeCopy || { name: "", children: [] });
+            return;
+          }
           break;
         case "In-Order":
           result = inOrderTraversal(tree);
@@ -1044,6 +1358,21 @@ const TreeVisualizer = () => {
           break;
         default:
           return;
+      }
+      
+      // Validate the result to ensure it won't cause a crash
+      if (!result || typeof result !== 'object') {
+        console.error("Invalid operation result:", result);
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+        // Restore the original tree
+        setTree(treeCopy || { name: "", children: [] });
+        return;
+      }
+      
+      // Ensure results array exists
+      if (!result.results || !Array.isArray(result.results)) {
+        result.results = [];
       }
       
       // Start animation
@@ -1071,15 +1400,25 @@ const TreeVisualizer = () => {
         return;
       }
       
-      // Animation complete
+      // Animation complete - ensure we preserve the final tree state
+      if (results.length > 0) {
+        const finalResult = results[results.length - 1];
+        if (finalResult && finalResult.hasOwnProperty('tree')) {
+          // Always use a valid tree object, never null
+          setTree(finalResult.tree || { name: "", children: [] });
+        }
+      }
+      
       setIsAnimating(false);
       return;
     }
     
     const currentResult = results[index];
     
-    if (currentResult.tree) {
-      setTree(currentResult.tree);
+    // Handle tree updates, carefully handling the null case
+    if (currentResult && currentResult.hasOwnProperty('tree')) {
+      // Never set the tree to null - use empty tree object instead
+      setTree(currentResult.tree || { name: "", children: [] });
     }
     
     setCurrentStep(currentResult.step || "");
@@ -1087,10 +1426,15 @@ const TreeVisualizer = () => {
     
     animationState.current.index++;
     
-    // Schedule next frame based on speed
+    // Use the animationDelay property if provided
+    const delay = currentResult.animationDelay 
+      ? currentResult.animationDelay * 1000 
+      : (1000 - speed * 9);
+    
+    // Schedule next frame based on speed or specific delay
     animationFrame.current = setTimeout(() => {
       requestAnimationFrame(updateAnimation);
-    }, 1000 - speed * 9);
+    }, delay);
   };
   
   const handleSpeedChange = (e) => {
@@ -1140,6 +1484,7 @@ const TreeVisualizer = () => {
       // Reset UI state
       setTraversalResult([]);
       setCurrentStep("");
+      setCurrentLine(0);
 
       // Create a balanced sample tree
       const sampleTree = {
@@ -1162,18 +1507,43 @@ const TreeVisualizer = () => {
         ]
       };
       
-      setTree(sampleTree);
-      setCurrentStep("Created a sample binary search tree");
+      // Validate the tree structure to ensure it's properly formed
+      const validateTree = (node) => {
+        if (!node) return true;
+        if (!node.name || typeof node.name !== 'string') return false;
+        if (!node.children) node.children = [];
+        
+        // Recursively validate children
+        for (const child of node.children) {
+          if (!validateTree(child)) return false;
+        }
+        return true;
+      };
+      
+      if (validateTree(sampleTree)) {
+        setTree(sampleTree);
+        setCurrentStep("Created a sample binary search tree");
+      } else {
+        // Fallback to a simpler tree if validation fails
+        const fallbackTree = {
+          name: '50', 
+          children: [
+            { name: '25', children: [] }, 
+            { name: '75', children: [] }
+          ]
+        };
+        setTree(fallbackTree);
+        setCurrentStep("Created a simplified binary search tree");
+      }
     } catch (error) {
       console.error("Error creating sample tree:", error);
-      setTree({
+      // Fallback to an even simpler tree
+      const emergencyTree = {
         name: '50',
-        children: [
-          { name: '25', children: [] },
-          { name: '75', children: [] }
-        ]
-      });
-      setCurrentStep("Created a simple binary search tree");
+        children: []
+      };
+      setTree(emergencyTree);
+      setCurrentStep("Created a simple root-only binary search tree");
     }
   };
   
