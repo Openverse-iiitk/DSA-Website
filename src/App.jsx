@@ -14,7 +14,9 @@ import DoublyLinkedListExplanation from './components/DoublyLinkedListExplanatio
 import HomePage from './components/HomePage'
 import AboutUs from './components/AboutUs'
 import SortingVisualizer from './components/SortingVisualizer'
-import TreeVisualizer from './components/TreeVisualizer'
+import TreeVisualizer from './components/TreeVisualizer';
+import AVLTreeVisualizer from './components/AVLTreeVisualizer';
+import RedBlackTreeVisualizer from './components/RedBlackTreeVisualizer';
 import PathfindingVisualizer from './components/PathfindingVisualizer/PathfindingVisualizer'
 import { generateCppCode } from './utils/codeGenerator'
 
@@ -155,7 +157,11 @@ function App() {
           }
         />
         <Route path="/sorting" element={<SortingVisualizer />} />
-        <Route path="/trees" element={<TreeVisualizer />} />
+        // In your Routes section
+        <Route path="/trees" element={<TreeVisualizer />} /> {/* This will show the selector */}
+        <Route path="/trees/bst" element={<TreeVisualizer showBST={true} />} />
+        <Route path="/trees/avl" element={<AVLTreeVisualizer />} />
+        <Route path="/trees/redblack" element={<RedBlackTreeVisualizer />} />
         <Route path="/graphs" element={<PathfindingVisualizer />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/index.html" element={<Navigate replace to="/" />} />

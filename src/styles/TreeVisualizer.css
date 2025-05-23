@@ -15,6 +15,7 @@
   overflow-x: hidden;
 }
 
+
 /* Home button styling */
 .app-header {
   width: 100%;
@@ -1109,4 +1110,90 @@ kbd {
 
 .keyboard-icon {
   font-size: 1.1rem;
+}
+
+/* Tree Type Selector */
+.tree-type-selector {
+  text-align: center;
+  padding: 2rem;
+}
+
+.tree-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.tree-option {
+  background: #2a4d38;
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 220px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tree-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.tree-icon {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  background: rgba(255,255,255,0.1);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+}
+
+/* AVL and RB specific node styles */
+.avl-node {
+  background-color: #4CAF50;
+}
+
+.red-node {
+  background-color: #f44336;
+}
+
+.black-node {
+  background-color: #333;
+  color: white;
+}
+
+.tree-type-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #2a4d38;
+  border-radius: 8px;
+}
+
+.tree-type-navigation button {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tree-type-navigation button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.tree-type-navigation button.active {
+  background: #4CAF50;
+  font-weight: bold;
 }
