@@ -53,9 +53,10 @@ const HomePage = () => {
     },
     {
       title: 'Stacks & Queues',
+      link: '/stack-queue',
       icon: <FaLayerGroup size={40} color={getIconColor('#FFFFFF')} />,
       color: '#FFFFFF', // White
-      enabled: false
+      enabled: true
     },
     {
       title: 'Trees',
@@ -140,10 +141,10 @@ const HomePage = () => {
       
       <header className="homepage-header">
         <div className="homepage-logo">
-          <a href="/">
+          <Link to="/">
             <img src={logo} alt="Openverse logo" />
             <span>Openverse</span>
-          </a>
+          </Link>
         </div>
         <div className="homepage-nav">
           <Link to="/about" className="homepage-nav-link">About us</Link>
