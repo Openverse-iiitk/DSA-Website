@@ -1,0 +1,7 @@
+.control-section {
+  flex: 0 0 auto; /* Don't grow or shrink */
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

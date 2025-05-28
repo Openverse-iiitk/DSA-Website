@@ -1,0 +1,37 @@
+.algorithm-code {
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.highlight-line {
+  animation: highlight-pulse 2s infinite;
+  transition: background-color 0.3s ease;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% { background-color: rgba(88, 166, 255, 0.2); }
+  50% { background-color: rgba(88, 166, 255, 0.4); }
+}
+
+/* Improve scrollbar appearance */
+.algorithm-code pre {
+  scrollbar-width: thin;
+  scrollbar-color: #6e7681 #0d1117;
+}
+
+.algorithm-code pre::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.algorithm-code pre::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+.algorithm-code pre::-webkit-scrollbar-thumb {
+  background-color: #6e7681;
+  border-radius: 6px;
+  border: 2px solid #0d1117;
+}

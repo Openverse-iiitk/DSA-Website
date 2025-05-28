@@ -1,0 +1,84 @@
+.error-boundary {
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #100E1A;
+  color: #FFFFFF;
+}
+
+.error-boundary h1 {
+  color: #FF4444;
+  margin-bottom: 1rem;
+}
+
+.error-boundary p {
+  margin-bottom: 2rem;
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.error-actions button,
+.error-actions .home-link {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.error-actions button {
+  background-color: #2A623D;
+  color: white;
+}
+
+.error-actions button:hover {
+  background-color: #357a4d;
+}
+
+.error-actions .home-link {
+  background-color: #4A3F6E;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.error-actions .home-link:hover {
+  background-color: #5a4c84;
+}
+
+.error-details {
+  margin-top: 2rem;
+  text-align: left;
+  width: 100%;
+  max-width: 800px;
+}
+
+.error-details summary {
+  cursor: pointer;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.error-details pre {
+  background-color: #1a1a2e;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #ddd;
+} 

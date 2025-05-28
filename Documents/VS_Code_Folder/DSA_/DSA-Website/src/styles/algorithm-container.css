@@ -1,0 +1,36 @@
+/* Algorithm code container in controls section */
+.algorithm-code-container {
+  background-color: #161b22;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* Allow container to grow with content */
+  min-height: 300px;
+  height: auto;
+  overflow: visible;
+}de container in controls section */
+.algorithm-code-container {
+  background-color: #161b22;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #30363d;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  /* Allow container to grow with content */
+  min-height: 300px;
+  max-height: 600vh;
+  overflow: hidden;
+}
+
+.algorithm-code-container h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  color: #8b949e;
+  font-size: 0.9rem;
+}

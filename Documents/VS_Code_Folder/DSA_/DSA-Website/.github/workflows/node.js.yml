@@ -1,0 +1,50 @@
+# This workflow builds, tests, and deploys the application to Firebase
+# Only deployable code will be merged to main
+
+name: Build, Test and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # Using one stable Node.js version for consistency
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+      
+ 
+    - name: Install Firebase CLI
+      run: npm install -g firebase-tools
+      
+    # On pull requests, verify the build can be deployed but don't actually deploy
+    - name: Firebase Deploy Dry Run (PR only)
+      if: github.event_name == 'pull_request'
+      run: firebase deploy --dry-run --token "${{ secrets.FIREBASE_TOKEN }}"
+      
+    # Only deploy when pushing to main branch, not on PRs
+    - name: Deploy to Firebase
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
+      env:
+        CI: true
