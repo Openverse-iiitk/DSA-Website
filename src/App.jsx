@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FaHome } from 'react-icons/fa'
@@ -7,6 +7,7 @@ import './components/LinkedListPage.css'
 import './styles/Sorting.css'
 import './styles/TreeVisualizer.css'
 import './styles/Pathfinding.css'
+import ErrorBoundary from './components/ErrorBoundary'
 import CodeViewer from './components/CodeViewer'
 import LinkedListVisualizer from './components/LinkedListVisualizer'
 import DiySection from './components/DiySection'
@@ -16,7 +17,9 @@ import AboutUs from './components/AboutUs'
 import SortingVisualizer from './components/SortingVisualizer'
 import TreeVisualizer from './components/TreeVisualizer'
 import PathfindingVisualizer from './components/PathfindingVisualizer/PathfindingVisualizer'
+import StackQueueVisualizer from './components/StackQueueVisualizer'
 import { generateCppCode } from './utils/codeGenerator'
+import debounce from 'lodash.debounce'
 
 // Create a wrapper component to handle LinkedList page state
 function LinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
@@ -76,25 +79,41 @@ function LinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, h
 }
 
 function App() {
+  const [nodes, setNodes] = useState([])
+  const [code, setCode] = useState('')
+  const [memoryPoolAddresses, setMemoryPoolAddresses] = useState([])
+
   // Persist state at App level
-  const [nodes, setNodes] = useState(() => {
-    const saved = sessionStorage.getItem('linkedListNodes');
-    return saved ? JSON.parse(saved) : [];
-  });
+  useEffect(() => {
+    const savedNodes = sessionStorage.getItem('linkedListNodes');
+    if (savedNodes) {
+      try {
+        const parsedNodes = JSON.parse(savedNodes);
+        setNodes(parsedNodes);
+      } catch (error) {
+        console.error('Failed to parse saved nodes from sessionStorage:', error);
+        // Fallback to empty array on parse error
+        setNodes([]);
+        // Clean up the invalid data
+        sessionStorage.removeItem('linkedListNodes');
+      }
+    }
+  }, []);
   
-  const [code, setCode] = useState(() => {
-    const saved = sessionStorage.getItem('linkedListCode');
-    return saved || generateCppCode([]);
-  });
+  useEffect(() => {
+    const savedCode = sessionStorage.getItem('linkedListCode');
+    if (savedCode) {
+      setCode(savedCode);
+    } else {
+      setCode(generateCppCode([]));
+    }
+  }, []);
 
   // Save state to sessionStorage when it changes
   useEffect(() => {
     sessionStorage.setItem('linkedListNodes', JSON.stringify(nodes));
     sessionStorage.setItem('linkedListCode', code);
   }, [nodes, code]);
-
-  // Store memory pool addresses
-  const [memoryPoolAddresses, setMemoryPoolAddresses] = useState([]);
 
   // Function to handle memory pool initialization
   const handleMemoryPoolInit = (addresses) => {
@@ -103,28 +122,54 @@ function App() {
 
   // Function to update visualization based on code changes
   const handleCodeChange = (nodesData) => {
-    if (Array.isArray(nodesData) && memoryPoolAddresses.length > 0) {
+    const MEMORY_POOL_SIZE = 10;
+
+    // Validate input data and memory pool size
+    if (!Array.isArray(nodesData) || memoryPoolAddresses.length < MEMORY_POOL_SIZE) {
+      console.error('Invalid input data or insufficient memory pool addresses');
+      return;
+    }
+
+    try {
       // Track used indices to avoid duplicates
       const usedIndices = new Set();
       
       const newNodes = nodesData.map((node, index) => {
-        // Find first available index
-        let memoryIndex = index;
-        while (usedIndices.has(memoryIndex % 10)) {
-          memoryIndex++;
+        // Ensure we don't exceed memory pool size
+        if (usedIndices.size >= MEMORY_POOL_SIZE) {
+          throw new Error('Memory pool capacity exceeded');
         }
-        memoryIndex = memoryIndex % 10;
+
+        // Find first available index
+        let memoryIndex = index % MEMORY_POOL_SIZE;
+        let attempts = 0;
+        
+        while (usedIndices.has(memoryIndex)) {
+          memoryIndex = (memoryIndex + 1) % MEMORY_POOL_SIZE;
+          attempts++;
+          
+          // Break if we've tried all possible indices
+          if (attempts >= MEMORY_POOL_SIZE) {
+            throw new Error('No available memory indices');
+          }
+        }
+        
         usedIndices.add(memoryIndex);
         
         return {
           data: node.data,
           address: memoryPoolAddresses[memoryIndex],
           memoryIndex: memoryIndex,
-          prev: index > 0 ? (index - 1) % 10 : null,
-          next: index < nodesData.length - 1 ? (index + 1) % 10 : null
+          prev: index > 0 ? (index - 1) % MEMORY_POOL_SIZE : null,
+          next: index < nodesData.length - 1 ? (index + 1) % MEMORY_POOL_SIZE : null
         };
       });
+      
       setNodes(newNodes);
+    } catch (error) {
+      console.error('Error in handleCodeChange:', error);
+      // Reset to empty state on error
+      setNodes([]);
     }
   };
 
@@ -138,27 +183,27 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route 
-          path="/linked-list" 
-          element={
-            <LinkedListPage
-              nodes={nodes}
-              setNodes={setNodes}
-              code={code}
-              setCode={setCode}
-              memoryPoolAddresses={memoryPoolAddresses}
-              handleMemoryPoolInit={handleMemoryPoolInit}
-              handleCodeChange={handleCodeChange}
-              updateNodesAndCode={updateNodesAndCode}
+        <Route path="/" element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+        <Route path="/linked-list" element={
+          <ErrorBoundary>
+            <LinkedListPage 
+              nodes={nodes} 
+              setNodes={setNodes} 
+              code={code} 
+              setCode={setCode} 
+              memoryPoolAddresses={memoryPoolAddresses} 
+              handleMemoryPoolInit={handleMemoryPoolInit} 
+              handleCodeChange={handleCodeChange} 
+              updateNodesAndCode={updateNodesAndCode} 
             />
-          }
-        />
-        <Route path="/sorting" element={<SortingVisualizer />} />
-        <Route path="/trees" element={<TreeVisualizer />} />
-        <Route path="/graphs" element={<PathfindingVisualizer />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/index.html" element={<Navigate replace to="/" />} />
+          </ErrorBoundary>
+        } />
+        <Route path="/sorting" element={<ErrorBoundary><SortingVisualizer /></ErrorBoundary>} />
+        <Route path="/trees" element={<ErrorBoundary><TreeVisualizer /></ErrorBoundary>} />
+        <Route path="/graphs" element={<ErrorBoundary><PathfindingVisualizer /></ErrorBoundary>} />
+        <Route path="/stack-queue" element={<ErrorBoundary><StackQueueVisualizer /></ErrorBoundary>} />
+        <Route path="/about" element={<ErrorBoundary><AboutUs /></ErrorBoundary>} />
+        <Route path="*" element={<ErrorBoundary><Navigate replace to="/" /></ErrorBoundary>} />
       </Routes>
     </Router>
   )
