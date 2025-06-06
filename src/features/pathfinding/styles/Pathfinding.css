@@ -37,50 +37,54 @@ table {
   flex-direction: column;
 }
 
-.node_start {
+.node {
   background-color: transparent;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.node_start {
+  background-color: #4CAF50;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node_start::after {
+  content: "S";
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .node_end {
-  background-color: transparent;
+  background-color: #f44336;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.node-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 2;
+.node_end::after {
+  content: "E";
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .node_wall {
-  background-color: transparent;
-  position: relative;
+  background-color: #263238;
+  animation: wallAnimation 0.2s ease-in-out;
 }
 
-.wall-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-  transition: all 0.2s ease-in-out;
-}
-
-.node_ {
-  background-color: transparent;
-}
-
-/* Ensure proper image handling */
-.node-image {
-  user-select: none;
-  pointer-events: none;
+@keyframes wallAnimation {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes pulse {

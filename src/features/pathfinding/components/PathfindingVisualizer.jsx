@@ -19,15 +19,6 @@ const InstructionsModal = ({ show, onClose, children }) => {
   );
 };
 
-// Node factory function for consistency
-function createNode(row, col, dis) {
-  return {
-    row,
-    col,
-    dis
-  };
-}
-
 class PathfindingVisualizer extends Component {
   constructor() {
     super();
@@ -42,8 +33,8 @@ class PathfindingVisualizer extends Component {
       shortestPath: 0,
       number_of_nodes: 0,
       showModal: true,
-      currentStep: "", // Added to show current operation
-      animationSpeed: 200, // Added for controlling animation speed
+      currentStep: "", 
+      animationSpeed: 10, // Reduced for faster animation
       algo_info: {
         "Algorithms": {
           text: "",
@@ -62,46 +53,26 @@ class PathfindingVisualizer extends Component {
     this.animating = false;
   }
   
-  // Initialize grid
+  /**
+   * Initialize grid with responsive dimensions
+   */
   makeGrid = () => {
     if (this.animating) return;
     
-    // Update status message
-    this.setState({
-      currentStep: "Resetting grid..."
-    });
+    this.setState({ currentStep: "Creating grid..." });
     
-    // Limit grid size to be more manageable and prevent performance issues
+    // Calculate grid dimensions based on window size
     let row_size = Math.min(Math.floor((window.innerHeight - 200) / 45), 15);
-    let col_size = Math.min(Math.floor((window.innerWidth - 100) / 45), 35); // Increased max columns
+    let col_size = Math.min(Math.floor((window.innerWidth - 100) / 45), 35);
     
-    // Ensure we have at least minimum grid size
+    // Ensure minimum grid size
     row_size = Math.max(row_size, 8);
-    col_size = Math.max(col_size, 20); // Increased minimum columns
+    col_size = Math.max(col_size, 20);
     
     console.log(`Creating grid of size ${row_size} x ${col_size}`);
     
-    // Completely clean up the existing grid to prevent persistence issues
-    if (this.state.grid && this.state.grid.length > 0) {
-      for (let i = 0; i < this.state.grid.length; i++) {
-        for (let j = 0; j < this.state.grid[i].length; j++) {
-          const nodeId = `node-${i}-${j}`;
-          const nodeElement = document.getElementById(nodeId);
-          if (nodeElement) {
-            // Reset class
-            nodeElement.className = "node_";
-            
-            // Remove all images within the node to ensure complete cleanup
-            const images = nodeElement.querySelectorAll('img');
-            images.forEach(img => img.remove());
-          }
-        }
-      }
-    }
-    
-    let arr = [];
-    
-    // First create the grid data structure
+    // Create a new grid
+    let grid = [];
     for (let i = 0; i < row_size; i++) {
       let row = [];
       for (let j = 0; j < col_size; j++) {
@@ -116,33 +87,27 @@ class PathfindingVisualizer extends Component {
           isEnd: false
         });
       }
-      arr.push(row);
-    }
-    
-    // Generate random start and end points
-    let start_x = Math.floor(row_size / 4);
-    let start_y = Math.floor(col_size / 4);
-    let end_x = Math.floor(3 * row_size / 4);
-    let end_y = Math.floor(3 * col_size / 4);
-    
-    // Make sure start and end are different
-    if (start_x === end_x && start_y === end_y) {
-      end_x = Math.min(end_x + 1, row_size - 1);
-      end_y = Math.min(end_y + 1, col_size - 1);
+      grid.push(row);
     }
     
     // Set start and end nodes
-    arr[start_x][start_y].isStart = true;
-    arr[end_x][end_y].isEnd = true;
+    const start_x = Math.floor(row_size / 4);
+    const start_y = Math.floor(col_size / 4);
+    const end_x = Math.floor(3 * row_size / 4);
+    const end_y = Math.floor(3 * col_size / 4);
+    
+    grid[start_x][start_y].isStart = true;
+    grid[end_x][end_y].isEnd = true;
 
-    // Update state with the new grid
+    // Update state
     this.setState({
-      grid: arr,
+      grid,
       start_node: [start_x, start_y],
       end_node: [end_x, end_y],
-      number_of_nodes: arr.length * arr[0].length,
+      number_of_nodes: row_size * col_size,
       visited: 0,
-      shortestPath: 0
+      shortestPath: 0,
+      currentStep: ""
     });
   };
   
