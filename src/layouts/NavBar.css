@@ -1,0 +1,33 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #1a1a2e;
+  color: white;
+  border-bottom: 1px solid #5bc9b1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.navbar-home {
+  margin-right: 10px;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.navbar-home:hover {
+  color: #5bc9b1;
+}
+
+.navbar-title {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  font-size: 1.5rem;
+}

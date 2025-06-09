@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { FaHome, FaInfoCircle } from "react-icons/fa";
 import "../styles/Pathfinding.css";
 import Node from "./Node";
+<<<<<<< HEAD
 import Dijkstra from "./algorithms/Dijkstra.jsx";
 import AStar from "./algorithms/AStar.jsx";
+=======
+import { Dijkstra, AStar } from "../utils";
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
 
 // Instructions Modal Component
 const InstructionsModal = ({ show, onClose, children }) => {
@@ -20,6 +24,7 @@ const InstructionsModal = ({ show, onClose, children }) => {
   );
 };
 
+<<<<<<< HEAD
 // Node factory function for consistency
 function createNode(row, col, dis) {
   return {
@@ -29,6 +34,8 @@ function createNode(row, col, dis) {
   };
 }
 
+=======
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
 class PathfindingVisualizer extends Component {
   constructor() {
     super();
@@ -43,8 +50,13 @@ class PathfindingVisualizer extends Component {
       shortestPath: 0,
       number_of_nodes: 0,
       showModal: true,
+<<<<<<< HEAD
       currentStep: "", // Added to show current operation
       animationSpeed: 200, // Added for controlling animation speed
+=======
+      currentStep: "", 
+      animationSpeed: 10, // Reduced for faster animation
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
       algo_info: {
         "Algorithms": {
           text: "",
@@ -63,6 +75,7 @@ class PathfindingVisualizer extends Component {
     this.animating = false;
   }
   
+<<<<<<< HEAD
   // Initialize grid
   makeGrid = () => {
     if (this.animating) return;
@@ -103,6 +116,28 @@ class PathfindingVisualizer extends Component {
     let arr = [];
     
     // First create the grid data structure
+=======
+  /**
+   * Initialize grid with responsive dimensions
+   */
+  makeGrid = () => {
+    if (this.animating) return;
+    
+    this.setState({ currentStep: "Creating grid..." });
+    
+    // Calculate grid dimensions based on window size
+    let row_size = Math.min(Math.floor((window.innerHeight - 200) / 45), 15);
+    let col_size = Math.min(Math.floor((window.innerWidth - 100) / 45), 35);
+    
+    // Ensure minimum grid size
+    row_size = Math.max(row_size, 8);
+    col_size = Math.max(col_size, 20);
+    
+    console.log(`Creating grid of size ${row_size} x ${col_size}`);
+    
+    // Create a new grid
+    let grid = [];
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
     for (let i = 0; i < row_size; i++) {
       let row = [];
       for (let j = 0; j < col_size; j++) {
@@ -117,6 +152,7 @@ class PathfindingVisualizer extends Component {
           isEnd: false
         });
       }
+<<<<<<< HEAD
       arr.push(row);
     }
     
@@ -144,6 +180,29 @@ class PathfindingVisualizer extends Component {
       number_of_nodes: arr.length * arr[0].length,
       visited: 0,
       shortestPath: 0
+=======
+      grid.push(row);
+    }
+    
+    // Set start and end nodes
+    const start_x = Math.floor(row_size / 4);
+    const start_y = Math.floor(col_size / 4);
+    const end_x = Math.floor(3 * row_size / 4);
+    const end_y = Math.floor(3 * col_size / 4);
+    
+    grid[start_x][start_y].isStart = true;
+    grid[end_x][end_y].isEnd = true;
+
+    // Update state
+    this.setState({
+      grid,
+      start_node: [start_x, start_y],
+      end_node: [end_x, end_y],
+      number_of_nodes: row_size * col_size,
+      visited: 0,
+      shortestPath: 0,
+      currentStep: ""
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
     });
   };
   

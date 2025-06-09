@@ -37,6 +37,7 @@ table {
   flex-direction: column;
 }
 
+<<<<<<< HEAD
 .node_start {
   background-color: transparent;
   position: relative;
@@ -81,6 +82,56 @@ table {
 .node-image {
   user-select: none;
   pointer-events: none;
+=======
+.node {
+  background-color: transparent;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.node_start {
+  background-color: #4CAF50;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node_start::after {
+  content: "S";
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.node_end {
+  background-color: #f44336;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.node_end::after {
+  content: "E";
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.node_wall {
+  background-color: #263238;
+  animation: wallAnimation 0.2s ease-in-out;
+}
+
+@keyframes wallAnimation {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+>>>>>>> 23ffa45d1c62f99863e78835eb2bacd6660e55c3
 }
 
 @keyframes pulse {
