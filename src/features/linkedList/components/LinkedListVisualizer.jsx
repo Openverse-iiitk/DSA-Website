@@ -362,39 +362,39 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolInit }) =
             disabled={!isValidInput || isLoading}
             title="Ctrl+Enter"
           >
-            <FaPlus /> Insert at Beginning
+             Insert at Beginning
           </button>
           <button 
             onClick={insertAtEnd} 
             disabled={!isValidInput || isLoading}
             title="Ctrl+Shift+Enter"
           >
-            <FaPlus /> Insert at End
+             Insert at End
           </button>
           <button 
             onClick={insertAtPosition} 
             disabled={!isValidInput || !isValidPosition || isLoading}
           >
-            <FaPlus /> Insert at Position
+            Insert at Position
           </button>
           <button 
             onClick={deleteFromBeginning} 
             disabled={nodes.length === 0 || isLoading}
             title="Ctrl+Delete"
           >
-            <FaTrash /> Delete from Beginning
+            Delete from Beginning
           </button>
           <button 
             onClick={deleteFromEnd} 
             disabled={nodes.length === 0 || isLoading}
           >
-            <FaTrash /> Delete from End
+            Delete from End
           </button>
           <button 
             onClick={deleteFromPosition} 
             disabled={!isValidPosition || nodes.length === 0 || isLoading}
           >
-            <FaTrash /> Delete from Position
+            Delete from Position
           </button>
           <button 
             onClick={clearList} 
@@ -402,7 +402,7 @@ const LinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolInit }) =
             title="Ctrl+Shift+Delete"
             className="danger"
           >
-            <FaTrash /> Clear List
+            Clear List
           </button>
         </div>
       </div>
