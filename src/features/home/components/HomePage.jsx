@@ -150,7 +150,9 @@ const HomePage = () => {
             animate={{ opacity: 1, y: 0, transition: { delay: 0.5, type: "spring", stiffness: 200 } }}
             className="take-quiz-btn-wrapper"
           >
+
             <Link to="/quiz" className="take-quiz-btn">
+           
               <span className="quiz-btn-icon">
                 <FaRocket size={20} />
               </span>
