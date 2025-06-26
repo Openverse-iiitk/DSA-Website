@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaGithub, FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH, FaRocket } from 'react-icons/fa';
+import { FaGithub, FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import '../styles/HomePage.css';
+import '../styles/landingpage.css';
 import Robocats from '../../../assets/Robocats.svg';
 import logo from '../../../assets/openverse2.svg';
 
@@ -46,32 +46,34 @@ const HomePage = () => {
   const dataStructureCards = [
     {
       title: 'Linked Lists',
-      link: '/linked-list', 
+      link: '/quiz/linkedlist', 
       icon: <FaListUl size={40} color={getIconColor('#4A3F6E')} />,
       color: '#4A3F6E', // Purple
-      enabled: true    },    {
+      enabled: true    },    
+    {
       title: 'Stacks & Queues',
-      link: '/stacks-queues',
+      link: '/quiz/stacks-queues',
       icon: <FaLayerGroup size={40} color={getIconColor('#4A3F6E')} />,
       color: '#4A3F6E', // Purple
       enabled: true
     },
     {
       title: 'Trees',
-      link: '/tree',
+      link: '/quiz/tree',
       icon: <FaTree size={40} color={getIconColor('#2A623D')} />,
       color: '#2A623D', // Green
       enabled: true
     },
     {
       title: 'Pathfinding',
-      link: '/pathfinding',
+      link: '/quiz/pathfinding',
       icon: <FaProjectDiagram size={40} color={getIconColor('#4A3F6E')} />,
       color: '#4A3F6E', // Purple
       enabled: true
     },
     {
       title: 'Hash Tables',
+      link: '/quiz/hash-tables',
       icon: <FaSitemap size={40} color={getIconColor('#FFFFFF')} />,
       color: '#FFFFFF', // White
       enabled: false
@@ -87,7 +89,7 @@ const HomePage = () => {
   const algorithmCards = [
     {
       title: 'Sorting Algorithms',
-      link: '/sorting',
+      link: '/quiz/sorting',
       icon: <FaSortNumericDown size={40} color={getIconColor('#4A3F6E')} />,
       color: '#4A3F6E', // Purple
       enabled: true
@@ -136,47 +138,14 @@ const HomePage = () => {
     <div className="homepage">
       {/* Enhanced starry background overlay */}
       <div className="homepage-bg-overlay"></div>
-      
+
       <header className="homepage-header">
         <div className="homepage-logo">
           <a href="/">
             <img src={logo} alt="Openverse logo" />
             <span>Openverse</span>
           </a>
-        </div>
-        <div className="homepage-nav">
-          {/* --- Cool "Take a Quiz" Button --- */}
-          <motion.div
-            whileHover={{
-              scale: 1.12,
-              rotate: [0, 2, -2, 0],
-              boxShadow: "0 0 24px 8px #a78bfa, 0 0 60px 0px #8b5cf6"
-            }}
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.5, type: "spring", stiffness: 200 } }}
-            className="take-quiz-btn-wrapper"
-          >
-            <Link to="/quiz/linked-list" className="take-quiz-btn">
-              <span className="quiz-btn-icon">
-                <FaRocket size={20} />
-              </span>
-              <span className="quiz-btn-text">Take a Quiz</span>
-              <span className="quiz-btn-emoji" role="img" aria-label="sparkles">✨</span>
-            </Link>
-            <span className="quiz-btn-glow"></span>
-          </motion.div>
-          {/* --- End Cool Button --- */}
-          <Link to="/about" className="homepage-nav-link">About us</Link>
-          <a
-            href="https://github.com/Openverse-iiitk/DSA-Website"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="homepage-nav-link"
-          >
-            <FaGithub size={24} />
-          </a>
-        </div>
+          </div>
       </header>
 
       <main className="homepage-main">
@@ -186,9 +155,12 @@ const HomePage = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          Algorithima
+          Quizzima
         </motion.h1>
-        
+
+        {/* Big beautiful modern button */}
+       
+
         <div className="homepage-columns">
           <div className="homepage-column">
             <h2 className="homepage-column-title">Data Structures</h2>
@@ -206,9 +178,9 @@ const HomePage = () => {
               ))}
             </div>
           </div>
-          
+
           <div className="homepage-divider"></div>
-          
+
           <div className="homepage-column">
             <h2 className="homepage-column-title">Algorithms</h2>
             <div className="homepage-card-grid">
@@ -226,7 +198,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Enhanced floating particles throughout the page */}
         <div className="floating-orb orb1"></div>
         <div className="floating-orb orb2"></div>
