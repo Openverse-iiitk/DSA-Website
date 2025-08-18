@@ -22,28 +22,8 @@ import { FaHome } from 'react-icons/fa'
 // Global styles - imported in order of specificity
 import './App.css'
 
-import './features/linkedList/styles/LinkedListHome.css'
-import './features/linkedList/styles/LinkedList.css'
-import './features/sorting/styles/Sorting.css'
-import './features/tree/styles/TreeVisualizer.css'
-import './features/tree/styles/TreeHome.css'
-import './features/pathfinding/styles/Pathfinding.css'
-import './features/quiz/styles/Quiz.css'
-import './features/quiz/styles/landingpage.css'
-import './features/archive/styles/landingpage.css'
-import './features/archive/styles/Archive.css'
-import './features/searchAlgos/styles/SearchAlgos.css'
-import './features/searchAlgos/styles/SearchHomepage.css'
-import './features/klee/styles/KleeAlgorithm.css'
-import './features/ds2/styles/DS2HomePage.css'
-import './features/graphs/styles/GraphAlgorithmsList.css'
-import './features/graphs/styles/GraphVisualizerTemplate.css'
-import './features/recursion/styles/RecursionVisualizer.css'
-import './features/hashTable/styles/HashTableVisualizer.css'
-import './features/greedyAlgorithms/styles/GreedyAlgorithmsList.css'
-import './features/greedyAlgorithms/styles/GreedyVisualizerTemplate.css'
-import './features/flowcharts/styles/BlockBuilder.css'
-import './features/pointers/styles/PointerVisualization.css'
+// Global common styles used across multiple components
+import './features/common/styles/common.css'
 
 
 // Shared components
