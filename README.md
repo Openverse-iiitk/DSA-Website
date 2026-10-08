@@ -1,6 +1,6 @@
 # Algorithima
 
-Algorithima is an educational data structures and algorithms visualizer built by Openverse contributors at IIIT Kottayam. It is used in DSA and C programming courses at the institute.
+Algorithima is a educational data structures and algorithms visualizer built by Openverse contributors at IIIT Kottayam. It is used in DSA and C programming courses at the institute.
 
 **Live demo:** <https://algorithima.web.app/>
 
