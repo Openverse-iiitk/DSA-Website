@@ -39,12 +39,12 @@ jobs:
       
     # On pull requests, verify the build can be deployed but don't actually deploy
     - name: Firebase Deploy Dry Run (PR only)
-      if: github.event_name == 'pull_request'
+      if: github.repository == 'Openverse-iiitk/DSA-Website' && github.event_name == 'pull_request'
       run: firebase deploy --dry-run --token "${{ secrets.FIREBASE_TOKEN }}"
       
     # Only deploy when pushing to main branch, not on PRs
     - name: Deploy to Firebase
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      if: github.repository == 'Openverse-iiitk/DSA-Website' && github.event_name == 'push' && github.ref == 'refs/heads/main'
       run: firebase deploy --token "${{ secrets.FIREBASE_TOKEN }}"
       env:
         CI: true
