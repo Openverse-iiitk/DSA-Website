@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "algorithima",
     "public": "dist",
     "ignore": [
       "firebase.json",
