@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * Graph Visualizer Template Component
  * 
@@ -10,7 +11,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { FaHome, FaArrowLeft } from 'react-icons/fa';
 import CodeViewer from '../../common/components/CodeViewer';
 import GraphControls from './GraphControls';

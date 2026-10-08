@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * Graph Visualization Component
  * 
@@ -6,13 +7,12 @@
  */
 
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+
 
 const GraphVisualization = ({
   graph = [],
   visitedNodes = new Set(),
   visitedEdges = new Set(),
-  currentStep = '',
   algorithmState = {},
   isAnimating = false
 }) => {

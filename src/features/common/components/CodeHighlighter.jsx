@@ -36,9 +36,6 @@ const CodeHighlighter = memo(({
 }) => {
   const codeContainerRef = useRef(null);
   
-  // Return null if no code provided
-  if (!code) return null;
-  
   /**
    * Custom line renderer for highlighting current line
    * @param {number} lineNumber - Line number (1-indexed)
@@ -75,7 +72,7 @@ const CodeHighlighter = memo(({
    * Auto-scroll to highlighted line with smooth animation
    */
   useEffect(() => {
-    if (!currentLine || !codeContainerRef.current) return;
+    if (!code || !currentLine || !codeContainerRef.current) return;
     
     // Use requestAnimationFrame for smooth scrolling
     const scrollToLine = () => {
@@ -100,7 +97,10 @@ const CodeHighlighter = memo(({
     // Small delay to ensure DOM is updated
     const timeoutId = setTimeout(scrollToLine, 100);
     return () => clearTimeout(timeoutId);
-  }, [currentLine]);
+  }, [code, currentLine]);
+
+  // Hooks must run in the same order even when the code prop is empty.
+  if (!code) return null;
   
   // Custom theme based on our application's color scheme
   const customTheme = {

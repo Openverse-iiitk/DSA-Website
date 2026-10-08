@@ -20,11 +20,12 @@ const CircularLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolI
       inUse: false,
       index
     }));
-    if (onMemoryPoolInit) {
-      onMemoryPoolInit(MEMORY_ADDRESSES);
-    }
     return pool;
   });
+
+  useEffect(() => {
+    onMemoryPoolInit?.(MEMORY_ADDRESSES);
+  }, [onMemoryPoolInit]);
 
   // Sync memory pool with existing nodes when component mounts or nodes change
   useEffect(() => {
@@ -52,7 +53,7 @@ const CircularLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolI
   const [isLoading, setIsLoading] = useState(false);
   
   // State for code highlighting animation
-  const [currentLine, setCurrentLine] = useState(0);
+  const [, setCurrentLine] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(500); // milliseconds
@@ -758,8 +759,8 @@ const CircularLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolI
     const midY = sourceY + 60;
     // Control points for Bezier curve
     const curveAmount = 30; // minimal curviness
-    const startCurveX = sourceX;
-    const endCurveX = targetX;
+
+
     const control1X = sourceX + curveAmount;
     const control2X = targetX - curveAmount;
     // Path: down, gentle curve, up

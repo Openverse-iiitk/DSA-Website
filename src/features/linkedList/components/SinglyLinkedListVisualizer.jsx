@@ -18,11 +18,12 @@ const SinglyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
       inUse: false,
       index
     }));
-    if (onMemoryPoolInit) {
-      onMemoryPoolInit(MEMORY_ADDRESSES);
-    }
     return pool;
   });
+
+  useEffect(() => {
+    onMemoryPoolInit?.(MEMORY_ADDRESSES);
+  }, [onMemoryPoolInit]);
 
   // Sync memory pool with existing nodes when component mounts or nodes change
   useEffect(() => {
@@ -50,7 +51,7 @@ const SinglyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
   const [isLoading, setIsLoading] = useState(false);
   
   // State for code highlighting animation
-  const [currentLine, setCurrentLine] = useState(0);
+  const [, setCurrentLine] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(500); // milliseconds

@@ -25,8 +25,9 @@ const BlockBasedAlgorithmBuilder = () => {
   const [selectedBlockType, setSelectedBlockType] = useState(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationStep, setSimulationStep] = useState(0);
+  const [simulationVariables, setSimulationVariables] = useState({});
   const [currentView, setCurrentView] = useState('builder'); // 'builder', 'code', 'pseudocode'
-  const [blockStates, setBlockStates] = useState({}); // Track block completion states
+  const [, setBlockStates] = useState({}); // Track block completion states
   
   // React Flow state
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -39,7 +40,7 @@ const BlockBasedAlgorithmBuilder = () => {
   // Handle placeholder clicks for adding blocks to specific branches
   const handlePlaceholderClick = useCallback((placeholderType, parentBlockId, branchType) => {
     // Find appropriate block type for the placeholder
-    let blockType;
+
     switch (placeholderType) {
       case 'if-true':
       case 'if-false':
@@ -224,6 +225,7 @@ const BlockBasedAlgorithmBuilder = () => {
     
     setIsSimulating(true);
     setSimulationStep(0);
+    setSimulationVariables({});
     setCurrentView('builder');
   }, [blocks]);
 
@@ -240,6 +242,10 @@ const BlockBasedAlgorithmBuilder = () => {
       alert('Algorithm execution completed!');
     }
   }, [simulationStep, blocks.length]);
+
+  const handlePreviousStep = useCallback(() => {
+    setSimulationStep((step) => Math.max(0, step - 1));
+  }, []);
 
   // Enhanced navigation with save warning
   const handleGoHome = useCallback(() => {
@@ -296,7 +302,7 @@ const BlockBasedAlgorithmBuilder = () => {
     
     // Check if IF blocks have both branches populated
     const checkBranches = (blockList, level = 0) => {
-      blockList.forEach((block, index) => {
+      blockList.forEach((block) => {
         if (block.type === BLOCK_TYPES.IF) {
           const trueEmpty = !block.children || block.children.length === 0;
           const falseEmpty = !block.elseChildren || block.elseChildren.length === 0;
@@ -647,9 +653,11 @@ const BlockBasedAlgorithmBuilder = () => {
       {isSimulating && (
         <SimulationPanel 
           blocks={blocks}
-          currentStep={simulationStep}
-          onNext={handleNextStep}
-          onStop={handleStopSimulation}
+          currentStepIndex={simulationStep}
+          variables={simulationVariables}
+          onNextStep={handleNextStep}
+          onPrevStep={handlePreviousStep}
+          onVariablesChange={setSimulationVariables}
         />
       )}
 

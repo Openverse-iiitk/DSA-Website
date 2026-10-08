@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { 
   FaGithub, 
   FaHome, 
@@ -77,10 +78,12 @@ const Archive = () => {
       
       switch (sortBy) {
         case 'difficulty':
+          {
           const difficultyOrder = { 'easy': 1, 'medium': 2, 'hard': 3 };
           aValue = difficultyOrder[a.difficulty.toLowerCase()];
           bValue = difficultyOrder[b.difficulty.toLowerCase()];
           break;
+          }
         case 'date':
           aValue = new Date(a.dateAdded || '2024-01-01');
           bValue = new Date(b.dateAdded || '2024-01-01');

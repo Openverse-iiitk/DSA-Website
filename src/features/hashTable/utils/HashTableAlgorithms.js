@@ -67,11 +67,11 @@ class HashTable {
   }
 
   // Collision Resolution Methods
-  linearProbe(hash, attempt, key) {
+  linearProbe(hash, attempt) {
     return (hash + attempt) % this.size;
   }
 
-  quadraticProbe(hash, attempt, key) {
+  quadraticProbe(hash, attempt) {
     return (hash + attempt * attempt) % this.size;
   }
 
@@ -286,15 +286,19 @@ class HashTable {
       case 'division':
         return `${key} % ${this.size} = ${result}`;
       case 'midSquare':
+        {
         const squared = key * key;
         return `${key}² = ${squared}, extract middle → ${result}`;
+        }
       case 'folding':
+        {
         const keyStr = key.toString();
         let parts = [];
         for (let i = 0; i < keyStr.length; i += 2) {
           parts.push(keyStr.substring(i, i + 2));
         }
         return `fold(${parts.join('+')}) % ${this.size} = ${result}`;
+        }
       default:
         return `${key} % ${this.size} = ${result}`;
     }

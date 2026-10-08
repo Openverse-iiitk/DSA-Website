@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import Editor from "@monaco-editor/react";
 
-const CodeViewer = ({ code, onChange, currentLine, isAnimating, nodes }) => {
+const CodeViewer = ({ code, onChange, currentLine, isAnimating }) => {
   const editorRef = useRef(null);
   const decorationsRef = useRef([]);
 

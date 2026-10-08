@@ -1,12 +1,13 @@
+import {motion} from 'framer-motion';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaGithub, FaRocket,FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+
 import '../styles/landingpage.css';
 import Robocats from '../../../assets/Robocats.svg';
 import logo from '../../../assets/openverse2.svg';
 
-const Card = ({ title, link, icon, type, enabled = true, gradientClass }) => {
+const Card = ({ title, link, icon, enabled = true, gradientClass }) => {
   // Apply card class with gradient class
   const cardClasses = `homepage-card ${enabled ? '' : 'homepage-card-disabled'} ${gradientClass || ''}`;
   

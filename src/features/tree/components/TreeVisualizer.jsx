@@ -482,16 +482,9 @@ const TreeDisplay = ({ tree, highlightedNode, currentStep }) => {
   }
   const calculateNodePositions = (node, level = 0, leftBound = 0, rightBound = 800) => {
     if (!node) return null;
-    const nodeRadius = 22;
+
     const minSpacing = 60;
     const levelHeight = 70;
-    const getSubtreeWidth = (n) => {
-      if (!n) return 0;
-      if (!n.left && !n.right) return minSpacing;
-      return getSubtreeWidth(n.left) + getSubtreeWidth(n.right) + minSpacing;
-    };
-    const leftSubtreeWidth = getSubtreeWidth(node.left);
-    const rightSubtreeWidth = getSubtreeWidth(node.right);
     const totalWidth = rightBound - leftBound;
     const x = leftBound + totalWidth / 2;
     const y = 50 + level * levelHeight;

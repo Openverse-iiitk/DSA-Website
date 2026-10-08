@@ -110,6 +110,7 @@ export const generateCCode = (blocks) => {
           break;
         
         case BLOCK_TYPES.PRINT:
+          {
           // Handle different print formats
           let printValue = block.value;
           if (usedVariables.has(printValue)) {
@@ -120,6 +121,7 @@ export const generateCCode = (blocks) => {
             code += indent(level) + `printf("${printValue}\\n");\n`;
           }
           break;
+          }
         
         case BLOCK_TYPES.ELSE:
         case BLOCK_TYPES.END_IF:

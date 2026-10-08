@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import GreedyVisualizerTemplate from './GreedyVisualizerTemplate';
 import { JOB_SCHEDULING_CODE, ALGORITHM_CONFIGS } from '../data/algorithmCodes';
 
@@ -348,7 +348,7 @@ const JobScheduling = () => {
       <div className="jobs-info">
         <h4>Jobs (Original Order)</h4>
         <div className="jobs-grid">
-          {jobs.map((job, index) => (
+          {jobs.map((job) => (
             <div key={job.id} className="job-info">
               <span className="job-id">Job {job.id}</span>
               <span className="job-details">
@@ -362,7 +362,7 @@ const JobScheduling = () => {
           <>
             <h4>Jobs (Sorted by Profit)</h4>
             <div className="jobs-grid">
-              {visualizationState.sortedJobs.map((job, index) => (
+              {visualizationState.sortedJobs.map((job) => (
                 <div key={job.id} className="job-info sorted">
                   <span className="job-id">Job {job.id}</span>
                   <span className="job-details">

@@ -26,12 +26,15 @@ npm run build
 npm run preview
 ```
 
-`npm run build` writes the static site to `dist/`. `npm run preview` serves that build locally. The repository does not include a dedicated automated interaction-test suite, so a successful build does not verify every visualization or browser interaction.
+`npm run build` writes the static site to `dist/`. `npm run preview` serves that
+build locally. `npm test` runs focused arithmetic-expression unit tests for the
+flowchart simulator. The repository does not yet include an automated browser
+interaction suite, so a successful build does not verify every visualization
+or interaction.
 
-The current `npm run lint` command is not a passing check: on the reviewed
-revision it reports 317 errors and 15 warnings across the repository. Treat
-that as existing cleanup work, not as evidence that the build or visualizations
-are broken.
+`npm run lint` checks the application source with ESLint. It currently exits
+successfully, with existing React hook and fast-refresh warnings remaining.
+These warnings are not a substitute for browser interaction checks.
 
 ## Contributing
 

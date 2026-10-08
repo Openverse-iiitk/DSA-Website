@@ -12,7 +12,7 @@ export const BLOCK_TYPES = {
 };
 
 // Block object structure with enhanced logic
-export const createBlock = (type, value = '', children = [], elseChildren = []) => {
+export const createBlock = (type, value = '', children = []) => {
   const block = {
     id: `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     type,

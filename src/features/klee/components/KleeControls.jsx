@@ -6,13 +6,10 @@ const KleeControls = ({
   totalLength,
   mode,
   currentStep,
-  onStartAnimation,
-  onReset,
-  onGenerateRandom,
   animationSteps,
   currentStepIndex
 }) => {
-  const canStartAnimation = segments.length > 0 && mode === 'drawing';
+
   const isAnimating = mode === 'visualizing';
   const isCompleted = mode === 'completed';
 

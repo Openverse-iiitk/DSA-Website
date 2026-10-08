@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * LinkedList Home Component
  * 
@@ -11,7 +12,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { 
   FaListUl, 
   FaExchangeAlt, 
@@ -86,7 +87,7 @@ const cardVariants = {
   }
 };
 
-const LinkedListCard = ({ card, index }) => {
+const LinkedListCard = ({ card }) => {
   const isDisabled = false; // All linked list types are now implemented
   
   return (

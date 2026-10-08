@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { FaHome, FaCode, FaArrowRight, FaRocket, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
 import '../styles/DS2HomePage.css';
 
@@ -80,7 +81,7 @@ const DS2HomePage = () => {
             }
           }}
         >
-          {ds2Algorithms.map((algo, index) => (
+          {ds2Algorithms.map((algo) => (
             <motion.div
               key={algo.id}
               className={`ds2-algorithm-card ${algo.status}`}

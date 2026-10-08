@@ -1,7 +1,7 @@
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import '@xyflow/react/dist/style.css';
-import { ReactFlow, MiniMap, Controls, Background, useReactFlow } from '@xyflow/react';
+import { ReactFlow, MiniMap, Controls, Background } from '@xyflow/react';
 import { memo } from 'react';
 
 // Example memory pool size
@@ -58,16 +58,8 @@ const buttonBase = {
   letterSpacing: 0.5,
 };
 
-const addressBtnStyle = {
-  ...buttonBase,
-  background: '#0077ff',
-  boxShadow: '0 0 0 2px #7ec8ff',
-};
-const valueBtnStyle = {
-  ...buttonBase,
-  background: theme.card,
-  boxShadow: buttonBase.boxShadow,
-};
+
+
 
 const PointersVisualizer = () => {
   // State for memory pool and pointers
@@ -112,11 +104,7 @@ const PointersVisualizer = () => {
   };
 
   // Add new pointer
-  const handleAddPointer = () => {
-    if (pointers.length < values.length) {
-      setPointers([...pointers, 0]);
-    }
-  };
+
 
   // Change pointer target
   const handlePointerChange = (pIdx, valIdx) => {
@@ -200,7 +188,7 @@ const PointersVisualizer = () => {
   }));
 
   // Custom edge type to offset arrows
-  const OffsetEdge = memo(({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, label, labelBgStyle, data }) => {
+  const OffsetEdge = memo(({ id, sourceX, sourceY, targetX, targetY, style, markerEnd, label, labelBgStyle }) => {
     // Default straight line edge rendering
     const path = `M${sourceX},${sourceY} L${targetX},${targetY}`;
     return (
@@ -256,7 +244,7 @@ const PointersVisualizer = () => {
   const codeByAddress = `#include <stdio.h>\n\nvoid foo(int *p) {\n    *p = 123;\n}\n\n// Memory Pool\n${values.map((v, idx) => `int ${valueNames[idx]} = ${v}; // Address: ${MEMORY_ADDRESSES[idx]}`).join('\n')}
 ${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[valIdx]}; // Address: ${MEMORY_ADDRESSES[values.length + pIdx]}, Value: ${MEMORY_ADDRESSES[valIdx]}`).join('\n')}\n\n// Usage\n${pointers.map((valIdx, pIdx) => `foo(${pointerNames[pIdx]});`).join(' ')}\n\n// Print values\n${values.map((v, idx) => `printf("%d ", ${valueNames[idx]});`).join(' ')} // Output: ${values.join(' ')} `;
   const codeByValue = `#include <stdio.h>\n\nvoid foo(int v) {\n    v = 123;\n}\n\n// Memory Pool\n${values.map((v, idx) => `int ${valueNames[idx]} = ${v}; // Address: ${MEMORY_ADDRESSES[idx]}`).join('\n')}
-${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[valIdx]}; // Address: ${MEMORY_ADDRESSES[values.length + pIdx]}, Value: ${MEMORY_ADDRESSES[valIdx]}`).join('\n')}\n\n// Usage\n${pointers.map((valIdx, pIdx) => `foo(${valueNames[valIdx]});`).join(' ')}\n\n// Print values\n${values.map((v, idx) => `printf("%d ", ${valueNames[idx]});`).join(' ')} // Output: ${values.join(' ')} `;
+${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[valIdx]}; // Address: ${MEMORY_ADDRESSES[values.length + pIdx]}, Value: ${MEMORY_ADDRESSES[valIdx]}`).join('\n')}\n\n// Usage\n${pointers.map((valIdx) => `foo(${valueNames[valIdx]});`).join(' ')}\n\n// Print values\n${values.map((v, idx) => `printf("%d ", ${valueNames[idx]});`).join(' ')} // Output: ${values.join(' ')} `;
 
   return (
     <div className="visualization" style={{ background: theme.bg, borderRadius: 16, padding: 36, boxShadow: '0 4px 32px #0005', maxWidth: 2200, margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>

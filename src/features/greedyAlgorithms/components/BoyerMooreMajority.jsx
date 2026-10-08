@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import GreedyVisualizerTemplate from './GreedyVisualizerTemplate';
 import { BOYER_MOORE_CODE, ALGORITHM_CONFIGS } from '../data/algorithmCodes';
 
@@ -21,7 +21,7 @@ const BoyerMooreMajority = () => {
   // Generate algorithm steps
   const generateSteps = useCallback((arr) => {
     const newSteps = [];
-    const newConsoleOutput = [];
+
     let candidate = 0;
     let count = 0;
     
@@ -172,7 +172,7 @@ const BoyerMooreMajority = () => {
       const newArray = value.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
       if (newArray.length > 0) {
         setArray(newArray);
-        const newSteps = generateSteps(newArray);
+
         setCurrentStep(0);
         setIsPlaying(false);
       }

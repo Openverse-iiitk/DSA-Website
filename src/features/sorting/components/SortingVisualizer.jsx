@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from "framer-motion";
+
 import { Link } from 'react-router-dom';
 import { FaHome, FaRandom, FaSortAmountDown, FaSlidersH } from 'react-icons/fa';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -934,7 +935,7 @@ const SortingVisualizer = () => {
       setArray(newArray);
       setShowCustomInput(false);
       setCustomInput('');
-    } catch (error) {
+    } catch {
       setShowError(true);
       setCurrentStep('Please enter valid numbers separated by commas');
       setTimeout(() => {

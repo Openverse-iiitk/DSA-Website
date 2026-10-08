@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React, { useState, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
+
 import { Link } from 'react-router-dom';
 import { FaHome } from 'react-icons/fa';
 import KleeCanvas from './components/KleeCanvas';

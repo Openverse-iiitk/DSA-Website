@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * Main Application Component - DSA Website
  * 
@@ -16,7 +17,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+
 import { FaHome } from 'react-icons/fa'
 
 // Global styles - imported in order of specificity
@@ -104,7 +105,7 @@ import { BlockBasedAlgorithmBuilder } from './features/flowcharts';
 
 
 // Utility functions
-import { generateCppCode } from './utils/codeGenerator'
+
 import { generateSinglyLinkedListCode } from './utils/singlyLinkedListCodeGenerator'
 import { generateCircularLinkedListCode } from './utils/circularLinkedListCodeGenerator'
 import { generateDoublyLinkedListCode } from './utils/doublyLinkedListCodeGenerator'
@@ -116,11 +117,11 @@ import { MEMORY_POOL_SIZE } from './constants'
  * Handles state coordination between code viewer and visualizer
  * Manages animation synchronization and memory pool
  */
-function LinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
+function LinkedListPage({ nodes, code, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
   // State for animation coordination between CodeViewer and DoublyLinkedListVisualizer
   const [currentLine, setCurrentLine] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [currentStep, setCurrentStep] = useState('');
+  const [, setCurrentStep] = useState('');
 
   // Function to handle animation state updates from DoublyLinkedListVisualizer
   const handleAnimationUpdate = useCallback((lineNumber, step, animating) => {
@@ -194,11 +195,11 @@ function LinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, h
  * Handles state coordination between code viewer and visualizer for singly linked lists
  * Manages animation synchronization and memory pool
  */
-function SinglyLinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
+function SinglyLinkedListPage({ nodes, code, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
   // State for animation coordination between CodeViewer and SinglyLinkedListVisualizer
   const [currentLine, setCurrentLine] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [currentStep, setCurrentStep] = useState('');
+  const [, setCurrentStep] = useState('');
 
   // Function to handle animation state updates from SinglyLinkedListVisualizer
   const handleAnimationUpdate = useCallback((lineNumber, step, animating) => {
@@ -272,11 +273,11 @@ function SinglyLinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddres
  * Handles state coordination between code viewer and visualizer for circular linked lists
  * Manages animation synchronization and memory pool
  */
-function CircularLinkedListPage({ nodes, setNodes, code, setCode, memoryPoolAddresses, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
+function CircularLinkedListPage({ nodes, code, handleMemoryPoolInit, handleCodeChange, updateNodesAndCode }) {
   // State for animation coordination between CodeViewer and CircularLinkedListVisualizer
   const [currentLine, setCurrentLine] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [currentStep, setCurrentStep] = useState('');
+  const [, setCurrentStep] = useState('');
 
   // Function to handle animation state updates from CircularLinkedListVisualizer
   const handleAnimationUpdate = useCallback((lineNumber, step, animating) => {
@@ -409,9 +410,9 @@ function App() {
   const [memoryPoolAddresses, setMemoryPoolAddresses] = useState([]);
 
   // Function to handle memory pool initialization
-  const handleMemoryPoolInit = (addresses) => {
+  const handleMemoryPoolInit = useCallback((addresses) => {
     setMemoryPoolAddresses(addresses);
-  };
+  }, []);
 
   // Function to update visualization based on code changes
   const handleCodeChange = (nodesData) => {

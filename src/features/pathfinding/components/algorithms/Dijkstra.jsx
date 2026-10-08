@@ -3,7 +3,7 @@ import React from 'react'; // Adding React import for JSX file
 
 const Dijkstra = (grid, start_node, end_node) => {
   const visited_nodes = [];
-  const shortestPathNodes = [];
+
   
   // Create a copy of the grid for distance calculations
   const distanceGrid = grid.map(row => 
@@ -70,7 +70,6 @@ const sortNodesByDistance = (unvisitedNodes) => {
 
 // Update distances to all neighbors
 const updateNeighbors = (node, grid) => {
-  const { col, row } = node;
   const neighbors = getNeighbors(node, grid);
   
   for (const neighbor of neighbors) {

@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import { FaCheckCircle, FaTimesCircle, FaLightbulb, FaCode } from 'react-icons/fa';
 
 const QuestionCard = ({

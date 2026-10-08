@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import {motion} from 'framer-motion';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaGithub, FaLinkedin, FaChevronDown } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
 import Particles from 'react-tsparticles';
@@ -94,24 +95,7 @@ const AboutUs = () => {
   ];
 
   // Testimonials data (keeping for future use, but not displaying)
-  const testimonials = [
-    {
-      text: "Openverse helped me grow as a developer and understand complex algorithms through beautiful visualizations!",
-      author: "Student, IIIT Kottayam"
-    },
-    {
-      text: "A supportive community with cosmic vision. The interactive learning approach is revolutionary.",
-      author: "Computer Science Graduate"
-    },
-    {
-      text: "The pathfinding visualizer made graph algorithms so much easier to understand. Amazing work!",
-      author: "Programming Enthusiast"
-    },
-    {
-      text: "Openverse bridges the gap between theory and practice in the most elegant way possible.",
-      author: "Software Developer"
-    }
-  ];
+
 
   // Image gallery settings
   const imageSettings = {

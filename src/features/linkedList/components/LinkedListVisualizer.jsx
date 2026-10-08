@@ -18,11 +18,12 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
       inUse: false,
       index
     }));
-    if (onMemoryPoolInit) {
-      onMemoryPoolInit(MEMORY_ADDRESSES);
-    }
     return pool;
   });
+
+  useEffect(() => {
+    onMemoryPoolInit?.(MEMORY_ADDRESSES);
+  }, [onMemoryPoolInit]);
 
   // Sync memory pool with existing nodes when component mounts or nodes change
   useEffect(() => {
@@ -50,7 +51,7 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
   const [isLoading, setIsLoading] = useState(false);
   
   // State for code highlighting animation
-  const [currentLine, setCurrentLine] = useState(0);
+  const [, setCurrentLine] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(500); // milliseconds
@@ -186,15 +187,15 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
         case 6:
           if (nodes.length > 0) {
             setCurrentLine(42);
-            setCurrentStep("Setting new node\'s next to current head");
-            onAnimationUpdate && onAnimationUpdate(42, "Setting new node\'s next to current head", true);
+            setCurrentStep("Setting new node's next to current head");
+            onAnimationUpdate && onAnimationUpdate(42, "Setting new node's next to current head", true);
           }
           break;
         case 7:
           if (nodes.length > 0) {
             setCurrentLine(43);
-            setCurrentStep("Setting current head\'s prev to new node");
-            onAnimationUpdate && onAnimationUpdate(43, "Setting current head\'s prev to new node", true);
+            setCurrentStep("Setting current head's prev to new node");
+            onAnimationUpdate && onAnimationUpdate(43, "Setting current head's prev to new node", true);
           }
           break;
         case 8:
@@ -291,15 +292,15 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
         case 6:
           if (nodes.length > 0) {
             setCurrentLine(57);
-            setCurrentStep("Setting tail\'s next to new node");
-            onAnimationUpdate && onAnimationUpdate(57, "Setting tail\'s next to new node", true);
+            setCurrentStep("Setting tail's next to new node");
+            onAnimationUpdate && onAnimationUpdate(57, "Setting tail's next to new node", true);
           }
           break;
         case 7:
           if (nodes.length > 0) {
             setCurrentLine(58);
-            setCurrentStep("Setting new node\'s prev to tail");
-            onAnimationUpdate && onAnimationUpdate(58, "Setting new node\'s prev to tail", true);
+            setCurrentStep("Setting new node's prev to tail");
+            onAnimationUpdate && onAnimationUpdate(58, "Setting new node's prev to tail", true);
           }
           break;
         case 8:
@@ -495,8 +496,8 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
         case 4:
           if (nodes.length > 1) {
             setCurrentLine(55);
-            setCurrentStep("Setting new head\'s prev to nullptr");
-            onAnimationUpdate && onAnimationUpdate(55, "Setting new head\'s prev to nullptr", true);
+            setCurrentStep("Setting new head's prev to nullptr");
+            onAnimationUpdate && onAnimationUpdate(55, "Setting new head's prev to nullptr", true);
           } else {
             setCurrentLine(57);
             setCurrentStep("List becomes empty");
@@ -576,8 +577,8 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
             onAnimationUpdate && onAnimationUpdate(71, "List has only one node - will become empty", true);
           } else {
             setCurrentLine(73);
-            setCurrentStep("Setting second-to-last node\'s next to nullptr");
-            onAnimationUpdate && onAnimationUpdate(73, "Setting second-to-last node\'s next to nullptr", true);
+            setCurrentStep("Setting second-to-last node's next to nullptr");
+            onAnimationUpdate && onAnimationUpdate(73, "Setting second-to-last node's next to nullptr", true);
           }
           break;
         case 4:
@@ -972,4 +973,4 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
   );
 };
 
-export default LinkedListVisualizer;
+export default DoublyLinkedListVisualizer;

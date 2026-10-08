@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { FaHome } from 'react-icons/fa';
 import BoyerMoorePage from './BoyerMoorePage';
 import JobSchedulingPage from './JobSchedulingPage';
@@ -82,7 +83,7 @@ const GreedyAlgorithms = () => (
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {algorithms.map((algo, idx) => (
+              {algorithms.map((algo) => (
                 <motion.div
                   key={algo.title}
                   className={`greedy-card modern-card ${algo.gradient} beautiful-card`}

@@ -57,7 +57,7 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
   const [isLoading, setIsLoading] = useState(false);
   
   // State for code highlighting animation
-  const [currentLine, setCurrentLine] = useState(0);
+  const [, setCurrentLine] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationSpeed, setAnimationSpeed] = useState(500); // milliseconds
@@ -193,15 +193,15 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
         case 6:
           if (nodes.length > 0) {
             setCurrentLine(42);
-            setCurrentStep("Setting new node\'s next to current head");
-            onAnimationUpdate && onAnimationUpdate(42, "Setting new node\'s next to current head", true);
+            setCurrentStep("Setting new node's next to current head");
+            onAnimationUpdate && onAnimationUpdate(42, "Setting new node's next to current head", true);
           }
           break;
         case 7:
           if (nodes.length > 0) {
             setCurrentLine(43);
-            setCurrentStep("Setting current head\'s prev to new node");
-            onAnimationUpdate && onAnimationUpdate(43, "Setting current head\'s prev to new node", true);
+            setCurrentStep("Setting current head's prev to new node");
+            onAnimationUpdate && onAnimationUpdate(43, "Setting current head's prev to new node", true);
           }
           break;
         case 8:
@@ -671,7 +671,6 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
     setIsAnimating(true);
     setIsLoading(true);
     let step = 0;
-    let deletedNodeData = '';
 
     const animate = () => {
       switch(step) {
@@ -712,7 +711,6 @@ const DoublyLinkedListVisualizer = ({ nodes = [], onNodesChange, onMemoryPoolIni
           
           try {
             const nodeToDelete = nodes[position];
-            deletedNodeData = nodeToDelete.data;
             const updatedNodes = [...nodes];
             
             // Update the pointers of adjacent nodes

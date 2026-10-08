@@ -376,7 +376,6 @@ export const questionBank = {
       options: ["O(n)", "O(n log n)", "O(n²)", "O(2ⁿ)"],
       correctAnswer: 2,
       explanation: "Quick Sort's worst case occurs when the pivot is always the smallest or largest element, leading to O(n²) complexity.",
-      explanation: "Quick Sort's worst case occurs when the pivot is always the smallest or largest element, leading to O(n²) complexity.",
       difficulty: "medium"
     },
     {

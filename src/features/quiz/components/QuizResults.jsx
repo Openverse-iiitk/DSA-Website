@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+
 import { FaTrophy, FaClock, FaPercentage, FaRedo, FaHome, FaCheckCircle, FaTimesCircle, FaStar, FaLightbulb, FaDownload } from 'react-icons/fa';
 import { formatTime } from '../store/quizStore';
 
@@ -12,8 +13,8 @@ const formatTopicName = (topicName) => {
 };
 
 const QuizResults = ({ results, onRetry, onBackToTopics, isDetailedView = false }) => {
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [showDetailedView, setShowDetailedView] = useState(results.isTestMode || isDetailedView);
+  const [, setShowConfetti] = useState(false);
+  const [showDetailedView] = useState(results.isTestMode || isDetailedView);
 
   // Show confetti for good scores
   useEffect(() => {

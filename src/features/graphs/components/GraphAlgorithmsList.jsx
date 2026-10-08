@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * Graph Algorithms List Component
  * 
@@ -11,7 +12,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { 
   FaProjectDiagram, 
   FaRoute, 

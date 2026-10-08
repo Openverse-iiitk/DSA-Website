@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import { FaHome, FaClock, FaQuestionCircle, FaCheck, FaTimes, FaArrowLeft, FaArrowRight, FaPlay, FaRedo, FaHistory, FaTrophy, FaDownload, FaTrash, FaFlask, FaEye, FaListUl } from 'react-icons/fa';
 
 import { useQuizStore, formatTime } from '../store/quizStore';
@@ -198,7 +198,6 @@ const Quiz = () => {
     isQuizActive,
     isQuizCompleted,
     timeStarted,
-    questionCount,
     quizResults,
     isTestMode,
     quizHistory,
@@ -209,7 +208,6 @@ const Quiz = () => {
     goToQuestion,
     submitQuiz,
     resetQuiz,
-    setQuestionCount,
     deleteQuizFromHistory
   } = useQuizStore();
 

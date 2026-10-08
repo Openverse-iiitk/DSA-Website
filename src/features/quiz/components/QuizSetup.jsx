@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+
 import { FaPlay, FaQuestionCircle, FaClock, FaListUl, FaChartLine, FaFlask, FaEye } from 'react-icons/fa';
 import { useQuizStore } from '../store/quizStore';
 

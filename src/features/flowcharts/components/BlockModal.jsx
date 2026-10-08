@@ -198,46 +198,9 @@ const BlockModal = ({ blockType, onCreateBlock, onCancel, placeholder, available
     }
   };
 
-  const getPlaceholder = () => {
-    const targetType = selectedType || blockType;
-    switch (targetType) {
-      case BLOCK_TYPES.ASSIGN:
-        return 'e.g., int x, x = 5, or count = count + 1';
-      case BLOCK_TYPES.INCREMENT:
-      case BLOCK_TYPES.DECREMENT:
-        return 'e.g., x, count, number';
-      case BLOCK_TYPES.INPUT:
-        return 'e.g., x, userInput, number';
-      case BLOCK_TYPES.IF:
-      case BLOCK_TYPES.WHILE:
-        return 'e.g., x < 10 or count != 0';
-      case BLOCK_TYPES.PRINT:
-        return 'e.g., x or "Hello World"';
-      default:
-        return '';
-    }
-  };
 
-  const getInputLabel = () => {
-    const targetType = selectedType || blockType;
-    switch (targetType) {
-      case BLOCK_TYPES.ASSIGN:
-        return 'Variable Declaration or Assignment:';
-      case BLOCK_TYPES.INCREMENT:
-        return 'Variable to Increment:';
-      case BLOCK_TYPES.DECREMENT:
-        return 'Variable to Decrement:';
-      case BLOCK_TYPES.INPUT:
-        return 'Variable to Store Input:';
-      case BLOCK_TYPES.IF:
-      case BLOCK_TYPES.WHILE:
-        return 'Condition:';
-      case BLOCK_TYPES.PRINT:
-        return 'Value to Print:';
-      default:
-        return 'Value:';
-    }
-  };
+
+
 
   // Check if input is needed for the current block type
   const needsInput = ![
@@ -245,17 +208,7 @@ const BlockModal = ({ blockType, onCreateBlock, onCancel, placeholder, available
     BLOCK_TYPES.STOP
   ].includes(selectedType || blockType);
 
-  const getBlockDescription = () => {
-    const targetType = selectedType || blockType;
-    switch (targetType) {
-      case BLOCK_TYPES.START:
-        return 'Marks the beginning of your algorithm.';
-      case BLOCK_TYPES.STOP:
-        return 'Marks the end of your algorithm.';
-      default:
-        return '';
-    }
-  };
+
 
   return (
     <div className="modal-overlay" onClick={onCancel}>

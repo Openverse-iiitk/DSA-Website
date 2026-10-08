@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaPlay, FaPause, FaStepForward, FaStepBackward, FaStop } from 'react-icons/fa';
 import { BLOCK_TYPES } from '../types';
+import { evaluateArithmeticExpression } from '../utils/arithmeticExpression';
 
 const SimulationPanel = ({ 
   blocks, 
@@ -35,6 +36,8 @@ const SimulationPanel = ({
     if (currentStepIndex >= 0 && currentStepIndex < blocks.length) {
       executeBlock(blocks[currentStepIndex]);
     }
+    // Execute once per selected step; including variables here would rerun that step after each update.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStepIndex, blocks]);
 
   const executeBlock = (block) => {
@@ -54,17 +57,15 @@ const SimulationPanel = ({
             value = value.replace(regex, newVariables[varName]);
           });
           
-          // Evaluate simple arithmetic expressions
+          // Evaluate simple arithmetic expressions without executing JavaScript.
           try {
-            // Basic safety check - only allow numbers, operators, and parentheses
-            if (/^[\d\+\-\*\/\(\)\s]+$/.test(value)) {
-              // eslint-disable-next-line no-eval
-              newVariables[left] = eval(value);
+            if (/^[\d.+*/()\s-]+$/.test(value)) {
+              newVariables[left] = evaluateArithmeticExpression(value);
             } else {
               // If it's not a simple arithmetic expression, treat as literal
               newVariables[left] = isNaN(value) ? 0 : parseInt(value);
             }
-          } catch (e) {
+          } catch {
             // If evaluation fails, try to parse as number or default to 0
             newVariables[left] = isNaN(value) ? 0 : parseInt(value);
           }
@@ -72,6 +73,7 @@ const SimulationPanel = ({
         break;
       
       case BLOCK_TYPES.PRINT:
+        {
         // For simulation, we just track what would be printed
         if (!newVariables._output) {
           newVariables._output = [];
@@ -86,6 +88,7 @@ const SimulationPanel = ({
         
         newVariables._output.push(printValue);
         break;
+        }
       
       default:
         // Other block types don't modify variables during simulation

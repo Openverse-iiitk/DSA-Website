@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+
 import { FaPlay, FaPause, FaRedo, FaForward, FaBackward, FaCode } from 'react-icons/fa';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';

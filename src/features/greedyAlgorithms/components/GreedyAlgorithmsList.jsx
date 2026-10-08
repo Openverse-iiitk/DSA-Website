@@ -1,6 +1,7 @@
+import {motion} from 'framer-motion';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { FaHome, FaCode, FaUsers, FaBriefcase, FaCheckCircle, FaArrowRight } from 'react-icons/fa';
 import '../styles/GreedyAlgorithmsList.css';
 

@@ -79,13 +79,12 @@ export class KleeAlgorithm {
     this.totalLength = 0;
 
     let currentX = null;
-    let lastActiveStart = null;
     let unionIntervals = [];
 
     // Sort events first
     this.generateEvents();
 
-    this.events.forEach((event, index) => {
+    this.events.forEach((event) => {
       // If we have active segments and moved to a new x-coordinate, 
       // add the length of the covered interval
       if (this.activeSegments.size > 0 && currentX !== null && event.x > currentX) {
@@ -121,10 +120,6 @@ export class KleeAlgorithm {
       if (event.type === 'start') {
         const wasEmpty = this.activeSegments.size === 0;
         this.activeSegments.add(event.segmentId);
-        
-        if (wasEmpty) {
-          lastActiveStart = event.x;
-        }
 
         const stepAfter = {
           type: 'process_event',

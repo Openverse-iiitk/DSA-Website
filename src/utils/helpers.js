@@ -351,7 +351,7 @@ export const throttleAnimation = (callback, fps = 60) => {
  */
 export const getStorageItem = (key, type = 'local') => {
   try {
-    const storage = type === 'session' ? sessionStorage : localStorage;
+    const storage = type === 'session' ? window.sessionStorage : window.localStorage;
     const value = storage.getItem(key);
     return value === null ? null : value;
   } catch (error) {
@@ -362,7 +362,7 @@ export const getStorageItem = (key, type = 'local') => {
 
 export const setStorageItem = (key, value, type = 'local') => {
   try {
-    const storage = type === 'session' ? sessionStorage : localStorage;
+    const storage = type === 'session' ? window.sessionStorage : window.localStorage;
     storage.setItem(key, value);
     return true;
   } catch (error) {
@@ -373,7 +373,7 @@ export const setStorageItem = (key, value, type = 'local') => {
 
 export const removeStorageItem = (key, type = 'local') => {
   try {
-    const storage = type === 'session' ? sessionStorage : localStorage;
+    const storage = type === 'session' ? window.sessionStorage : window.localStorage;
     storage.removeItem(key);
     return true;
   } catch (error) {

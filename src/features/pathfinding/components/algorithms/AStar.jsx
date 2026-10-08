@@ -3,7 +3,7 @@ import React from 'react'; // Adding React import for JSX file
 
 const AStar = (grid, start_node, end_node) => {
   const visited_nodes = [];
-  const shortestPathNodes = [];
+
   
   // Create a copy of the grid for distance calculations
   const distanceGrid = grid.map(row => 

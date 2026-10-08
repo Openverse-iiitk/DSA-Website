@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 /**
  * Graph Controls Component
  * 
@@ -9,7 +10,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+
 import { 
   FaPlay, 
   FaPause, 
@@ -28,8 +29,7 @@ const GraphControls = ({
   isPlaying,
   speed,
   onSpeedChange,
-  config = {},
-  algorithmState = {}
+  config = {}
 }) => {
   const [startNode, setStartNode] = useState(0);
   const [endNode, setEndNode] = useState(null);
@@ -68,9 +68,10 @@ const GraphControls = ({
     
     switch (type) {
       case 'tree':
+        {
         // Generate a binary tree-like structure
         newGraph = Array(7).fill().map(() => Array(7).fill(0));
-        const treeWeight = isWeighted ? Math.floor(Math.random() * 5) + 1 : 1;
+
         
         // Create tree edges
         const treeEdges = [
@@ -87,8 +88,10 @@ const GraphControls = ({
           }
         });
         break;
+        }
         
       case 'complete':
+        {
         // Generate complete graph
         const size = 5;
         newGraph = Array(size).fill().map(() => Array(size).fill(0));
@@ -101,8 +104,10 @@ const GraphControls = ({
           }
         }
         break;
+        }
         
       case 'path':
+        {
         // Generate path graph
         const pathSize = 6;
         newGraph = Array(pathSize).fill().map(() => Array(pathSize).fill(0));
@@ -114,6 +119,7 @@ const GraphControls = ({
           }
         }
         break;
+        }
         
       default:
         return;

@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback, useRef } from 'react';
+import {motion, AnimatePresence} from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaHome, FaArrowLeft, FaPlay, FaPause, FaStop, FaStepForward, FaStepBackward } from 'react-icons/fa';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -12,8 +12,6 @@ const GreedyVisualizerTemplate = ({
   algorithmCode,
   timeComplexity,
   spaceComplexity,
-  initialData,
-  onAlgorithmStep,
   renderVisualization,
   renderControls,
   steps = [],
@@ -23,11 +21,9 @@ const GreedyVisualizerTemplate = ({
   onPlayPause,
   onReset,
   currentLine = 0,
-  consoleOutput = [],
-  config = {}
+  consoleOutput = []
 }) => {
   const [speed, setSpeed] = useState(1);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const codeViewerRef = useRef(null);
 
   // Remove auto-scroll behavior to prevent page jumping

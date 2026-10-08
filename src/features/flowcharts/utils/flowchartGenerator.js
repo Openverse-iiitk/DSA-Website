@@ -1,7 +1,7 @@
 import { BLOCK_TYPES, NODE_SHAPES } from '../types';
 
 // Convert blocks to React Flow nodes and edges
-export const generateFlowchartData = (blocks, onPlaceholderClick) => {
+export const generateFlowchartData = (blocks) => {
   if (!blocks || blocks.length === 0) {
     return { nodes: [], edges: [] };
   }
@@ -34,37 +34,6 @@ export const generateFlowchartData = (blocks, onPlaceholderClick) => {
       background: '#1f2937',
       text: '#f9fafb'
     };
-
-    // Responsive sizing function for better zoom compatibility
-    const getNodeDimensions = (type) => {
-      const baseWidth = Math.max(120, Math.min(200, window.innerWidth * 0.12));
-      const baseHeight = Math.max(60, Math.min(100, window.innerHeight * 0.08));
-      
-      switch (type) {
-        case BLOCK_TYPES.START:
-        case BLOCK_TYPES.STOP:
-          return {
-            width: Math.max(100, baseWidth * 0.8),
-            height: Math.max(60, baseHeight),
-            borderRadius: '50%'
-          };
-        case BLOCK_TYPES.IF:
-          return {
-            width: Math.max(120, baseWidth),
-            height: Math.max(120, baseWidth), // Square for diamond shape
-            clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
-          };
-        default:
-          return {
-            width: Math.max(140, baseWidth * 1.1),
-            height: Math.max(60, baseHeight),
-            borderRadius: '8px'
-          };
-      }
-    };
-
-    const dimensions = getNodeDimensions(block.type);
-    const fontSize = Math.max(10, Math.min(14, dimensions.width * 0.08));
 
     switch (block.type) {
       case BLOCK_TYPES.START:
@@ -464,7 +433,7 @@ export const generateFlowchartData = (blocks, onPlaceholderClick) => {
   };
 
   // Process a branch of blocks (for if/while children)
-  const processBranch = (branchBlocks, xOffset, startY, branchType) => {
+  const processBranch = (branchBlocks, xOffset, startY) => {
     const branchNodes = [];
     let currentY = startY;
     

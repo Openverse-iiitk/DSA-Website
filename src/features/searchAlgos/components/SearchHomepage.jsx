@@ -1,5 +1,6 @@
+import {motion} from 'framer-motion';
 import React from 'react';
-import { motion } from 'framer-motion';
+
 import { FaHome, FaCode, FaArrowRight, FaSearch, FaRocket, FaChartLine } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 

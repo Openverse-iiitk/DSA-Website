@@ -27,7 +27,7 @@ export const useQuizStore = create(
       quizHistory: [],
       
       // Actions
-      startQuiz: (topic, questions, questionCount, isTestMode = false) => set((state) => ({
+      startQuiz: (topic, questions, questionCount, isTestMode = false) => set(() => ({
         currentQuiz: {
           topic,
           questionCount,

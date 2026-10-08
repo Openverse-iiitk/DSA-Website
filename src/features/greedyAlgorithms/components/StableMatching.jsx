@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import GreedyVisualizerTemplate from './GreedyVisualizerTemplate';
 import { STABLE_MATCHING_CODE, ALGORITHM_CONFIGS } from '../data/algorithmCodes';
 

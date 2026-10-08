@@ -22,12 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.github
-
-#Ignore vscode AI rules
-.github/copilot-instructions.md
-
-
-dev
-arhcives
-trans

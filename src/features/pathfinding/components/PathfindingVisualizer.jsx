@@ -21,13 +21,7 @@ const InstructionsModal = ({ show, onClose, children }) => {
 };
 
 // Node factory function for consistency
-function createNode(row, col, dis) {
-  return {
-    row,
-    col,
-    dis
-  };
-}
+
 
 class PathfindingVisualizer extends Component {
   constructor() {

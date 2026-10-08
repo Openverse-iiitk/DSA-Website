@@ -1,14 +1,13 @@
+import {motion} from 'framer-motion';
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+
 import { FaArrowLeft, FaArrowRight, FaFlag, FaQuoteLeft } from 'react-icons/fa';
 
 const QuizNavigation = ({
   currentIndex,
   totalQuestions,
-  userAnswers,
   onPrevious,
   onNext,
-  onJumpToQuestion,
   showExplanation
 }) => {
   const canGoPrevious = currentIndex > 0;
