@@ -113,11 +113,11 @@ const PointersVisualizer = () => {
     setPointers(newPointers);
   };
 
-  // Build ReactFlow nodes and edges
-  const canvasWidth = 1200;
-  const canvasHeight = 520;
-  const nodeWidth = 120;
-  const nodeHeight = 80;
+  // Build ReactFlow nodes and edges - responsive dimensions
+  const canvasWidth = Math.min(1200, window.innerWidth * 0.8);
+  const canvasHeight = Math.min(520, window.innerHeight * 0.4);
+  const nodeWidth = Math.max(80, Math.min(120, canvasWidth * 0.1));
+  const nodeHeight = Math.max(60, Math.min(80, canvasHeight * 0.15));
   const totalWidth = values.length * nodeWidth + (values.length - 1) * 40;
   const startX = Math.max((canvasWidth - totalWidth) / 2, 20);
   const centerY = canvasHeight / 2 - nodeHeight / 2;
@@ -251,7 +251,7 @@ ${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[val
       {/* Home button top left */}
       <a href="/" style={{ position: 'absolute', top: 24, left: 32, background: theme.accent, color: theme.text, borderRadius: 8, padding: '8px 22px', fontWeight: 700, fontSize: 18, textDecoration: 'none', boxShadow: '0 2px 8px #0003', border: `2px solid ${theme.accentLight}`, letterSpacing: 1, transition: 'background 0.2s', zIndex: 10 }}>Home</a>
       <h2 style={{ color: theme.accentLight, marginBottom: 18, fontWeight: 800, letterSpacing: 1.5, fontSize: 32, textShadow: '0 2px 8px #0006', textAlign: 'center' }}>Pointers Visualization</h2>
-      <div className="controls" style={{ marginBottom: 22, display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', background: theme.card, borderRadius: 12, padding: '20px 22px 12px 22px', boxShadow: '0 2px 12px #0002', border: `1px solid ${theme.border}`, maxWidth: 1200, width: '100%', justifyContent: 'center' }}>
+      <div className="controls" style={{ marginBottom: 22, display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', background: theme.card, borderRadius: 12, padding: '20px 22px 12px 22px', boxShadow: '0 2px 12px #0002', border: `1px solid ${theme.border}`, maxWidth: '95%', width: '100%', justifyContent: 'center' }}>
         <button
           onClick={() => {
             if (pointers.length < valueNames.length) {
@@ -301,9 +301,9 @@ ${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[val
         </select>
       </div>
       {/* Main 3-panel layout: code | visualization | info */}
-      <div style={{ display: 'flex', flexDirection: 'row', gap: 32, alignItems: 'flex-start', justifyContent: 'center', width: '100%', maxWidth: 2100, margin: '0 auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: 16, alignItems: 'flex-start', justifyContent: 'center', width: '100%', maxWidth: '95vw', margin: '0 auto', flexWrap: 'wrap' }}>
         {/* Code Panel (Left) */}
-        <div className="code-section" style={{ background: theme.card, borderRadius: 14, padding: 32, color: theme.text, minWidth: 420, maxWidth: 600, boxShadow: '0 2px 16px #0003', border: `1.5px solid ${theme.border}`, flex: '0 0 520px', alignSelf: 'stretch', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+        <div className="code-section" style={{ background: theme.card, borderRadius: 14, padding: 24, color: theme.text, minWidth: '300px', maxWidth: '500px', boxShadow: '0 2px 16px #0003', border: `1.5px solid ${theme.border}`, flex: '1 1 400px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
           <h3 style={{ color: theme.accentLight, marginBottom: 12, fontWeight: 700, fontSize: 20 }}>Code Example</h3>
           <div style={{ display: 'flex', flexDirection: 'row', gap: 14, justifyContent: 'center', alignItems: 'center', marginBottom: 16 }}>
             <button onClick={() => setMode('address')} style={{ ...buttonBase, background: theme.accent, boxShadow: '0 0 0 2px ' + theme.accentLight, minWidth: 180, fontSize: 16, padding: '8px 18px' }}>Call by Address</button>
@@ -314,19 +314,19 @@ ${pointers.map((valIdx, pIdx) => `int *${pointerNames[pIdx]} = &${valueNames[val
           </pre>
         </div>
         {/* Visualization Panel (Center) */}
-        <div className="visualization-area" style={{ background: '#181A20', borderRadius: 12, padding: '20px 60px', flex: '1 1 1200px', minWidth: 1200, maxWidth: 1400, boxShadow: '0 2px 16px #0003', border: `1.5px solid ${theme.border}`, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div className="pointer-flow-display" style={{ height: canvasHeight, width: canvasWidth, background: '#181A20', borderRadius: 10, marginBottom: 24, boxShadow: '0 2px 12px #0002', border: `1px solid ${theme.border}` }}>
+        <div className="visualization-area" style={{ background: '#181A20', borderRadius: 12, padding: '20px', flex: '1 1 auto', minWidth: '300px', maxWidth: '90vw', boxShadow: '0 2px 16px #0003', border: `1.5px solid ${theme.border}`, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className="pointer-flow-display" style={{ height: canvasHeight, width: '100%', maxWidth: canvasWidth, background: '#181A20', borderRadius: 10, marginBottom: 24, boxShadow: '0 2px 12px #0002', border: `1px solid ${theme.border}` }}>
             <ReactFlow
               nodes={[...rfValueNodes, ...rfPointerNodes]}
               edges={rfEdges}
-              fitView={false}
-              panOnDrag={false}
-              zoomOnScroll={false}
-              zoomOnPinch={false}
-              zoomOnDoubleClick={false}
-              minZoom={1}
-              maxZoom={1}
-              style={{ width: canvasWidth, height: canvasHeight, background: '#181A20', borderRadius: 8 }}
+              fitView={true}
+              panOnDrag={true}
+              zoomOnScroll={true}
+              zoomOnPinch={true}
+              zoomOnDoubleClick={true}
+              minZoom={0.5}
+              maxZoom={2}
+              style={{ width: '100%', height: '100%', background: '#181A20', borderRadius: 8 }}
               edgeTypes={{ offset: OffsetEdge }}
             >
               <MiniMap nodeColor={n => n.style?.background || '#222'} maskColor="#181A20" />
