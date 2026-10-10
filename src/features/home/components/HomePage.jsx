@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {motion} from 'framer-motion';
-import { FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH, FaSync } from 'react-icons/fa';
+import { FaRocket, FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH, FaSync } from 'react-icons/fa';
 
 import '../styles/HomePage.css';
 import Robocats from '../../../assets/Robocats.svg';
