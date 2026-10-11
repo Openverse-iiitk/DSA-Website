@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {motion} from 'framer-motion';
-import { FaGithub, FaRocket, FaBook  , FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH, FaSync } from 'react-icons/fa';
+import { FaRocket, FaRegLightbulb, FaListUl, FaLayerGroup, FaTree, FaProjectDiagram, FaSitemap, FaSortNumericDown, FaChartLine, FaCode, FaRandom, FaSlidersH, FaSync } from 'react-icons/fa';
 
 import '../styles/HomePage.css';
 import Robocats from '../../../assets/Robocats.svg';
-import logo from '../../../assets/openverse2.svg';
+import Navbar from '../../../features/common/components/Navbar.jsx';
 
 const Card = ({ title, link, icon, enabled = true, gradientClass }) => {
   // Apply card class with gradient class
@@ -157,63 +157,7 @@ const HomePage = () => {
       {/* Enhanced starry background overlay */}
       <div className="homepage-bg-overlay"></div>
       
-      <header className="homepage-header">
-        <div className="homepage-logo">
-          <a href="/">
-            <img src={logo} alt="Openverse logo" />
-            <span>Openverse</span>
-          </a>
-        </div>
-         <div className="homepage-nav">
-          {/* --- Cool "Take a Quiz" Button --- */}
-          <motion.div
-          
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0, transition: { delay: 0.5, type: "spring", stiffness: 200 } }}
-            className="take-quiz-btn-wrapper"
-          >
-
-            <Link to="/quiz" className="take-quiz-btn">
-           
-              <span className="quiz-btn-icon">
-                <FaRocket size={20} />
-              </span>
-              <span className="quiz-btn-text">Take a Quiz</span>
-              <span className="quiz-btn-emoji" role="img" aria-label="sparkles">✨</span>
-            </Link>
-            <span className="quiz-btn-glow"></span>
-          </motion.div>
-          {/* --- End Cool Button --- */}
-            <motion.div
-
-                      whileTap={{ scale: 0.97 }}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0, transition: { delay: 0.5, type: "spring", stiffness: 200 } }}
-                      className="take-quiz-btn-wrapper"
-                    >
-          
-                      <Link to="/archive" className="take-quiz-btn">
-                     
-                        <span className="quiz-btn-icon">
-                          <FaBook size={20} />
-                        </span>
-                        <span className="quiz-btn-text">Practice Questions</span>
-                        <span className="quiz-btn-emoji" role="img" aria-label="sparkles">✨</span>
-                      </Link>
-                      <span className="quiz-btn-glow"></span>
-                    </motion.div>
-          <Link to="/about" className="homepage-nav-link">About us</Link>
-          <a
-            href="https://github.com/Openverse-iiitk/DSA-Website"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="homepage-nav-link"
-          >
-            <FaGithub size={24} />
-          </a>
-        </div>
-      </header>
+<Navbar />
 
       <main className="homepage-main">
         <motion.h1

@@ -20,6 +20,7 @@ import '../styles/Archive.css';
 import logo from '../../../assets/openverse2.svg';
 import { leetCodeData } from '../data/leetCodeData';
 import { iiitk_pyqData } from '../data/iiitk_pyqData';
+import Navbar from '../../../features/common/components/Navbar.jsx';
 
 const Archive = () => {
   const { topic } = useParams();
@@ -181,18 +182,7 @@ const Archive = () => {
             </span>
           </div>
 
-          <div className="archive-nav">
-            <Link to="/quiz" className="archive-nav-link">Quiz</Link>
-            <Link to="/about" className="archive-nav-link">About</Link>
-            <a
-              href="https://github.com/Openverse-iiitk/DSA-Website"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="archive-nav-link"
-            >
-              <FaGithub size={20} />
-            </a>
-          </div>
+          <Navbar inline={true} />
         </div>
       </header>
 

@@ -1,7 +1,7 @@
 import {motion} from 'framer-motion';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaHome, FaGithub, FaLinkedin, FaChevronDown } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaChevronDown } from 'react-icons/fa';
 
 import { useInView } from 'react-intersection-observer';
 import Slider from 'react-slick';
@@ -11,6 +11,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '../styles/AboutUs.css';
 import openverseLogo from '../../../assets/openverse2.svg';
+import Navbar from '../../../features/common/components/Navbar.jsx';
 
 import particlesConfig from './particles.json';
 
@@ -127,13 +128,7 @@ const AboutUs = () => {
 
   return (
     <div className="about-us-container">
-      {/* Navigation */}
-      <nav className="about-us-nav">
-        <Link to="/" className="home-link">
-          <FaHome />
-          <span>Home</span>
-        </Link>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section 
