@@ -42,13 +42,13 @@ export const generateFlowchartData = (blocks) => {
           background: darkColors.start, 
           color: darkColors.text, 
           borderRadius: '50%',
-          width: 120,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '14px',
+          fontSize: `${fontSize}px`,
           fontWeight: 'bold'
         };
         data.label = 'START';
@@ -60,13 +60,13 @@ export const generateFlowchartData = (blocks) => {
           background: darkColors.stop, 
           color: darkColors.text, 
           borderRadius: '50%',
-          width: 120,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '14px',
+          fontSize: `${fontSize}px`,
           fontWeight: 'bold'
         };
         data.label = 'STOP';
@@ -77,13 +77,13 @@ export const generateFlowchartData = (blocks) => {
           background: darkColors.assign, 
           color: darkColors.text,
           borderRadius: '8px',
-          width: 180,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           padding: '8px'
         };
@@ -95,13 +95,13 @@ export const generateFlowchartData = (blocks) => {
           background: darkColors.print, 
           color: darkColors.text,
           borderRadius: '8px',
-          width: 180,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           padding: '8px'
         };
@@ -113,13 +113,13 @@ export const generateFlowchartData = (blocks) => {
           background: '#10b981', // emerald-500
           color: darkColors.text,
           borderRadius: '8px',
-          width: 180,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           padding: '8px'
         };
@@ -131,13 +131,13 @@ export const generateFlowchartData = (blocks) => {
           background: '#f97316', // orange-500
           color: darkColors.text,
           borderRadius: '8px',
-          width: 180,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           padding: '8px'
         };
@@ -149,13 +149,13 @@ export const generateFlowchartData = (blocks) => {
           background: '#ec4899', // pink-500
           color: darkColors.text,
           borderRadius: '8px',
-          width: 180,
-          height: 80,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           padding: '8px'
         };
@@ -166,13 +166,13 @@ export const generateFlowchartData = (blocks) => {
         style = { 
           background: darkColors.if, 
           color: darkColors.text,
-          width: 140,
-          height: 140,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
           padding: '20px'
@@ -189,13 +189,13 @@ export const generateFlowchartData = (blocks) => {
         style = { 
           background: darkColors.while, 
           color: darkColors.text,
-          width: 140,
-          height: 140,
+          width: dimensions.width,
+          height: dimensions.height,
           border: '2px solid #374151',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '12px',
+          fontSize: `${fontSize}px`,
           fontWeight: '500',
           clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
           padding: '20px'
@@ -254,8 +254,8 @@ export const generateFlowchartData = (blocks) => {
       color: '#9ca3af',
       border: '2px dashed #6b7280',
       borderRadius: '8px',
-      width: 180,
-      height: 60,
+      width: Math.max(140, Math.min(180, window.innerWidth * 0.12)),
+      height: Math.max(50, Math.min(60, window.innerHeight * 0.06)),
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
